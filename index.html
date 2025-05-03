@@ -1,351 +1,462 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Sam Sage | Official Website</title>
     <style>
-      * {
-        margin: 0;
-        padding: 0;
-        box-sizing: border-box;
-        font-family: "Orbitron", sans-serif;
-      }
-
-      body {
-        background: #0a0a0a;
-        color: #ffffff;
-        overflow-x: hidden;
-      }
-
-      header {
-        position: fixed;
-        top: 0;
-        width: 100%;
-        background: rgba(0, 0, 0, 0.8);
-        backdrop-filter: blur(10px);
-        z-index: 1000;
-        padding: 20px 0;
-      }
-
-      nav {
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        max-width: 1200px;
-        margin: 0 auto;
-        padding: 0 20px;
-      }
-
-      nav .logo {
-        font-size: 1.5rem;
-        font-weight: 700;
-        color: #00ffcc;
-        text-transform: uppercase;
-        letter-spacing: 2px;
-      }
-
-      nav ul {
-        display: flex;
-        list-style: none;
-      }
-
-      nav ul li {
-        margin-left: 30px;
-      }
-
-      nav ul li a {
-        color: #ffffff;
-        text-decoration: none;
-        font-size: 1rem;
-        transition: color 0.3s ease;
-      }
-
-      nav ul li a:hover {
-        color: #00ffcc;
-      }
-
-      .hero {
-        height: 100vh;
-        display: flex;
-        flex-direction: column;
-        justify-content: center;
-        align-items: center;
-        text-align: center;
-        background: url("https://source.unsplash.com/random/1920x1080?neon,music")
-          no-repeat center/cover;
-        position: relative;
-      }
-
-      .hero::before {
-        content: "";
-        position: absolute;
-        top: 0;
-        left: 0;
-        width: 100%;
-        height: 100%;
-        background: rgba(0, 0, 0, 0.6);
-        z-index: 1;
-      }
-
-      .hero-content {
-        position: relative;
-        z-index: 2;
-      }
-
-      .hero h1 {
-        font-size: 4rem;
-        text-transform: uppercase;
-        letter-spacing: 5px;
-        margin-bottom: 20px;
-        animation: neon-glow 2s ease-in-out infinite alternate;
-      }
-
-      @keyframes neon-glow {
-        from {
-          text-shadow: 0 0 10px #00ffcc, 0 0 20px #00ffcc, 0 0 30px #00ffcc;
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Orbitron', sans-serif;
         }
-        to {
-          text-shadow: 0 0 20px #00ffcc, 0 0 30px #00ffcc, 0 0 40px #00ffcc;
+
+        body {
+            background: #0a0a0a;
+            color: #ffffff;
+            overflow-x: hidden;
         }
-      }
 
-      .hero p {
-        font-size: 1.2rem;
-        margin-bottom: 30px;
-        color: #cccccc;
-      }
+        header {
+            position: fixed;
+            top: 0;
+            width: 100%;
+            background: rgba(0, 0, 0, 0.8);
+            backdrop-filter: blur(10px);
+            z-index: 1000;
+            padding: 20px 0;
+        }
 
-      .cta-button {
-        padding: 15px 30px;
-        background: transparent;
-        border: 2px solid #00ffcc;
-        color: #00ffcc;
-        font-size: 1rem;
-        text-transform: uppercase;
-        cursor: pointer;
-        transition: all 0.3s ease;
-      }
+        nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
 
-      .cta-button:hover {
-        background: #00ffcc;
-        color: #0a0a0a;
-      }
-
-      section {
-        padding: 80px 20px;
-        max-width: 1200px;
-        margin: 0 auto;
-      }
-
-      .about h2,
-      .music h2,
-      .tour h2 {
-        font-size: 2.5rem;
-        margin-bottom: 30px;
-        color: #00ffcc;
-        text-align: center;
-      }
-
-      .about p,
-      .music p,
-      .tour p {
-        font-size: 1.1rem;
-        line-height: 1.6;
-        color: #cccccc;
-        text-align: center;
-      }
-
-      .music-grid {
-        display: grid;
-        grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-        gap: 20px;
-        margin-top: 40px;
-      }
-
-      .music-card {
-        background: #1a1a1a;
-        padding: 20px;
-        border-radius: 10px;
-        text-align: center;
-        transition: transform 0.3s ease;
-      }
-
-      .music-card:hover {
-        transform: translateY(-10px);
-      }
-
-      .music-card img {
-        width: 100%;
-        border-radius: 10px;
-        margin-bottom: 15px;
-      }
-
-      .music-card h3 {
-        font-size: 1.2rem;
-        margin-bottom: 10px;
-      }
-
-      .tour-dates {
-        margin-top: 40px;
-      }
-
-      .tour-date {
-        background: #1a1a1a;
-        padding: 20px;
-        border-radius: 10px;
-        margin-bottom: 20px;
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-      }
-
-      footer {
-        background: #0a0a0a;
-        padding: 40px 20px;
-        text-align: center;
-        border-top: 1px solid #333;
-      }
-
-      footer p {
-        color: #cccccc;
-      }
-
-      footer .social-links a {
-        color: #00ffcc;
-        margin: 0 10px;
-        text-decoration: none;
-        font-size: 1.2rem;
-      }
-
-      @media (max-width: 768px) {
-        .hero h1 {
-          font-size: 2.5rem;
+        nav .logo {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: #bb33ff;
+            text-transform: uppercase;
+            letter-spacing: 2px;
         }
 
         nav ul {
-          flex-direction: column;
-          position: absolute;
-          top: 70px;
-          left: 0;
-          width: 100%;
-          background: rgba(0, 0, 0, 0.9);
-          padding: 20px;
-          display: none;
+            display: flex;
+            list-style: none;
+            align-items: center;
         }
 
-        nav ul.active {
-          display: flex;
+        nav ul li {
+            margin-left: 30px;
+            position: relative;
         }
 
-        nav .menu-toggle {
-          display: block;
-          cursor: pointer;
-          color: #00ffcc;
-          font-size: 1.5rem;
+        nav ul li a {
+            color: #ffffff;
+            text-decoration: none;
+            font-size: 1rem;
+            transition: color 0.3s ease;
         }
-      }
+
+        nav ul li a:hover {
+            color: #bb33ff;
+        }
+
+        .dropdown {
+            position: relative;
+        }
+
+        .dropdown-content {
+            display: none;
+            position: absolute;
+            top: 100%;
+            left: 0;
+            background: rgba(0, 0, 0, 0.9);
+            min-width: 150px;
+            border-radius: 5px;
+            padding: 10px 0;
+            z-index: 100;
+        }
+
+        .dropdown:hover .dropdown-content {
+            display: block;
+        }
+
+        .dropdown-content a {
+            display: block;
+            padding: 10px 20px;
+            color: #ffffff;
+            text-decoration: none;
+            font-size: 0.9rem;
+        }
+
+        .dropdown-content a:hover {
+            background: #bb33ff;
+            color: #0a0a0a;
+        }
+
+        .hero {
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            background: url('https://source.unsplash.com/random/1920x1080?neon,purple') no-repeat center/cover;
+            position: relative;
+        }
+
+        .hero::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.6);
+            z-index: 1;
+        }
+
+        .hero-content {
+            position: relative;
+            z-index: 2;
+        }
+
+        .hero h1 {
+            font-size: 4rem;
+            text-transform: uppercase;
+            letter-spacing: 5px;
+            margin-bottom: 20px;
+            animation: neon-glow 2s ease-in-out infinite alternate;
+        }
+
+        @keyframes neon-glow {
+            from {
+                text-shadow: 0 0 10px #bb33ff, 0 0 20px #bb33ff, 0 0 30px #bb33ff;
+            }
+            to {
+                text-shadow: 0 0 20px #bb33ff, 0 0 30px #bb33ff, 0 0 40px #bb33ff;
+            }
+        }
+
+        .hero p {
+            font-size: 1.2rem;
+            margin-bottom: 30px;
+            color: #cccccc;
+        }
+
+        .cta-button {
+            padding: 15px 30px;
+            background: transparent;
+            border: 2px solid #bb33ff;
+            color: #bb33ff;
+            font-size: 1rem;
+            text-transform: uppercase;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .cta-button:hover {
+            background: #bb33ff;
+            color: #0a0a0a;
+        }
+
+        section {
+            padding: 80px 20px;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .about h2, .music h2, .gallery h2, .tour h2 {
+            font-size: 2.5rem;
+            margin-bottom: 30px;
+            color: #bb33ff;
+            text-align: center;
+        }
+
+        .about p, .music p, .gallery p, .tour p {
+            font-size: 1.1rem;
+            line-height: 1.6;
+            color: #cccccc;
+            text-align: center;
+        }
+
+        .music-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+            margin-top: 40px;
+        }
+
+        .music-card {
+            background: #1a1a1a;
+            padding: 20px;
+            border-radius: 10px;
+            text-align: center;
+            transition: transform 0.3s ease;
+        }
+
+        .music-card:hover {
+            transform: translateY(-10px);
+        }
+
+        .music-card img {
+            width: 100%;
+            border-radius: 10px;
+            margin-bottom: 15px;
+        }
+
+        .music-card h3 {
+            font-size: 1.2rem;
+            margin-bottom: 10px;
+        }
+
+        .gallery-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 20px;
+            margin-top: 40px;
+        }
+
+        .gallery-item {
+            position: relative;
+            overflow: hidden;
+            border-radius: 10px;
+        }
+
+        .gallery-item img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.3s ease;
+        }
+
+        .gallery-item:hover img {
+            transform: scale(1.1);
+        }
+
+        .gallery-item::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(187, 51, 255, 0.3);
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+
+        .gallery-item:hover::before {
+            opacity: 1;
+        }
+
+        .tour-dates {
+            margin-top: 40px;
+        }
+
+        .tour-date {
+            background: #1a1a1a;
+            padding: 20px;
+            border-radius: 10px;
+            margin-bottom: 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        footer {
+            background: #0a0a0a;
+            padding: 40px 20px;
+            text-align: center;
+            border-top: 1px solid #333;
+        }
+
+        footer p {
+            color: #cccccc;
+            margin-bottom: 20px;
+        }
+
+        footer .social-links a {
+            color: #bb33ff;
+            margin: 0 15px;
+            text-decoration: none;
+            font-size: 1.2rem;
+        }
+
+        .brand-logos {
+            margin-top: 30px;
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap;
+            gap: 20px;
+        }
+
+        .brand-logos img {
+            max-width: 100px;
+            filter: grayscale(100%);
+            transition: filter 0.3s ease;
+        }
+
+        .brand-logos img:hover {
+            filter: grayscale(0%);
+        }
+
+        @media (max-width: 768px) {
+            .hero h1 {
+                font-size: 2.5rem;
+            }
+
+            nav ul {
+                flex-direction: column;
+                position: absolute;
+                top: 70px;
+                left: 0;
+                width: 100%;
+                background: rgba(0, 0, 0, 0.9);
+                padding: 20px;
+                display: none;
+            }
+
+            nav ul.active {
+                display: flex;
+            }
+
+            nav .menu-toggle {
+                display: block;
+                cursor: pointer;
+                color: #bb33ff;
+                font-size: 1.5rem;
+            }
+
+            .dropdown-content {
+                position: static;
+                background: none;
+                padding: 10px 0;
+            }
+        }
     </style>
-    <link
-      href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&display=swap"
-      rel="stylesheet"
-    />
-  </head>
-  <body>
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&display=swap" rel="stylesheet">
+</head>
+<body>
     <header>
-      <nav>
-        <div class="logo">Sam Sage</div>
-        <ul>
-          <li><a href="#home">Home</a></li>
-          <li><a href="#about">About</a></li>
-          <li><a href="#music">Music</a></li>
-          <li><a href="#tour">Tour</a></li>
-        </ul>
-        <div class="menu-toggle">☰</div>
-      </nav>
+        <nav>
+            <div class="logo">Sam Sage</div>
+            <ul>
+                <li><a href="#home">Home</a></li>
+                <li><a href="#about">About</a></li>
+                <li><a href="#music">Music</a></li>
+                <li><a href="#gallery">Gallery</a></li>
+                <li><a href="#tour">Tour</a></li>
+                <li class="dropdown">
+                    <a href="#livestreams">Livestreams</a>
+                    <div class="dropdown-content">
+                        <a href="https://www.twitch.tv/samsagewize" target="_blank">Twitch</a>
+                    </div>
+                </li>
+            </ul>
+            <div class="menu-toggle">☰</div>
+        </nav>
     </header>
 
     <section class="hero" id="home">
-      <div class="hero-content">
-        <h1>Sam Sage</h1>
-        <p>Pop Star | Dream Weaver | Future Sound</p>
-        <button class="cta-button">Listen Now</button>
-      </div>
+        <div class="hero-content">
+            <h1>Sam Sage</h1>
+            <p>Pop Star | Dream Weaver | Cosmic Sound</p>
+            <button class="cta-button">Listen Now</button>
+        </div>
     </section>
 
     <section class="about" id="about">
-      <h2>About Sam Sage</h2>
-      <p>
-        Sam Sage is a visionary pop artist blending futuristic beats with
-        soulful melodies. With a unique sound that transcends genres, Sam is
-        redefining the music scene.
-      </p>
+        <h2>About Sam Sage</h2>
+        <p>Sam Sage is a visionary pop artist blending cosmic beats with soulful melodies. With a unique sound that transcends genres, Sam is redefining the music scene.</p>
     </section>
 
     <section class="music" id="music">
-      <h2>Music</h2>
-      <div class="music-grid">
-        <div class="music-card">
-          <img
-            src="https://source.unsplash.com/random/300x300?album,neon"
-            alt="Album 1"
-          />
-          <h3>Starlight Vibes</h3>
-          <p>2025 Release</p>
+        <h2>Music</h2>
+        <div class="music-grid">
+            <div class="music-card">
+                <img src="https://source.unsplash.com/random/300x300?album,purple" alt="Album 1">
+                <h3>Starlight Vibes</h3>
+                <p>2025 Release</p>
+            </div>
+            <div class="music-card">
+                <img src="https://source.unsplash.com/random/300x300?music,purple" alt="Album 2">
+                <h3>Neon Dreams</h3>
+                <p>2024 Release</p>
+            </div>
+            <div class="music-card">
+                <img src="https://source.unsplash.com/random/300x300?pop,purple" alt="Album 3">
+                <h3>Cosmic Echoes</h3>
+                <p>2023 Release</p>
+            </div>
         </div>
-        <div class="music-card">
-          <img
-            src="https://source.unsplash.com/random/300x300?music,neon"
-            alt="Album 2"
-          />
-          <h3>Neon Dreams</h3>
-          <p>2024 Release</p>
+    </section>
+
+    <section class="gallery" id="gallery">
+        <h2>Gallery</h2>
+        <p>Explore the visual universe of Sam Sage, capturing the essence of the brand.</p>
+        <div class="gallery-grid">
+            <div class="gallery-item">
+                <img src="https://source.unsplash.com/random/600x400?concert,purple" alt="Concert Photo">
+            </div>
+            <div class="gallery-item">
+                <img src="https://source.unsplash.com/random/600x400?artist,purple" alt="Artist Portrait">
+            </div>
+            <div class="gallery-item">
+                <img src="https://source.unsplash.com/random/600x400?stage,purple" alt="Stage Performance">
+            </div>
+            <div class="gallery-item">
+                <img src="https://source.unsplash.com/random/600x400?music,purple" alt="Studio Shot">
+            </div>
         </div>
-        <div class="music-card">
-          <img
-            src="https://source.unsplash.com/random/300x300?pop,neon"
-            alt="Album 3"
-          />
-          <h3>Cosmic Echoes</h3>
-          <p>2023 Release</p>
-        </div>
-      </div>
     </section>
 
     <section class="tour" id="tour">
-      <h2>Tour Dates</h2>
-      <div class="tour-dates">
-        <div class="tour-date">
-          <span>June 15, 2025 - Neon City</span>
-          <button class="cta-button">Get Tickets</button>
+        <h2>Tour Dates</h2>
+        <div class="tour-dates">
+            <div class="tour-date">
+                <span>June 15, 2025 - Cosmic City</span>
+                <button class="cta-button">Get Tickets</button>
+            </div>
+            <div class="tour-date">
+                <span>July 20, 2025 - Starlight Arena</span>
+                <button class="cta-button">Get Tickets</button>
+            </div>
+            <div class="tour-date">
+                <span>August 10, 2025 - Nebula Dome</span>
+                <button class="cta-button">Get Tickets</button>
+            </div>
         </div>
-        <div class="tour-date">
-          <span>July 20, 2025 - Starlight Arena</span>
-          <button class="cta-button">Get Tickets</button>
-        </div>
-        <div class="tour-date">
-          <span>August 10, 2025 - Cosmic Dome</span>
-          <button class="cta-button">Get Tickets</button>
-        </div>
-      </div>
     </section>
 
     <footer>
-      <p>&copy; 2025 Sam Sage. All Rights Reserved.</p>
-      <div class="social-links">
-        <a href="#">Spotify</a>
-        <a href="#">Instagram</a>
-        <a href="#">X</a>
-      </div>
+        <p>© 2025 Sam Sage. All Rights Reserved.</p>
+        <div class="social-links">
+            <a href="https://open.spotify.com/artist/3o7QHIT3xAl7YM7nd9QiTk" target="_blank">Spotify</a>
+            <a href="https://www.instagram.com/samsagewize/" target="_blank">Instagram</a>
+            <a href="https://www.youtube.com/@SamSageWize" target="_blank">YouTube</a>
+            <a href="https://www.twitch.tv/samsagewize" target="_blank">Twitch</a>
+        </div>
+        <div class="brand-logos">
+            <img src="https://source.unsplash.com/random/100x100?logo,purple" alt="Brand Logo 1">
+            <img src="https://source.unsplash.com/random/100x100?logo,neon" alt="Brand Logo 2">
+            <img src="https://source.unsplash.com/random/100x100?logo,music" alt="Brand Logo 3">
+        </div>
     </footer>
 
     <script>
-      const menuToggle = document.querySelector(".menu-toggle");
-      const navMenu = document.querySelector("nav ul");
+        const menuToggle = document.querySelector('.menu-toggle');
+        const navMenu = document.querySelector('nav ul');
 
-      menuToggle.addEventListener("click", () => {
-        navMenu.classList.toggle("active");
-      });
+        menuToggle.addEventListener('click', () => {
+            navMenu.classList.toggle('active');
+        });
     </script>
-  </body>
+</body>
 </html>
