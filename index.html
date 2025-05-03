@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Sam Sage | Official Website</title>
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&display=swap" rel="stylesheet">
     <style>
         * {
             margin: 0;
@@ -124,7 +125,7 @@
             justify-content: center;
             align-items: center;
             text-align: center;
-            background: url('https://source.unsplash.com/random/1920x1080?neon,purple') no-repeat center/cover;
+            background: url('image4 (2).jpeg') no-repeat center/cover;
             position: relative;
         }
 
@@ -149,7 +150,7 @@
             text-transform: uppercase;
             letter-spacing: 5px;
             margin-bottom: 20px;
-            animation: neon-glow 2s ease-in-out infinite alternate;
+            animation: neon-glow 2s ease-in-out infinite alternate, flicker 3s infinite;
         }
 
         @keyframes neon-glow {
@@ -158,6 +159,15 @@
             }
             to {
                 text-shadow: 0 0 20px #bb33ff, 0 0 30px #bb33ff, 0 0 40px #bb33ff;
+            }
+        }
+
+        @keyframes flicker {
+            0%, 19%, 21%, 23%, 25%, 54%, 56%, 100% {
+                opacity: 1;
+            }
+            20%, 24%, 55% {
+                opacity: 0.2;
             }
         }
 
@@ -174,6 +184,8 @@
             color: #bb33ff;
             font-size: 1rem;
             text-transform: uppercase;
+            text-decoration: none;
+            display: inline-block;
             cursor: pointer;
             transition: all 0.3s ease;
         }
@@ -189,14 +201,14 @@
             margin: 0 auto;
         }
 
-        .about h2, .music h2, .gallery h2, .tour h2 {
+        .about h2, .music h2, .gallery h2 {
             font-size: 2.5rem;
             margin-bottom: 30px;
             color: #bb33ff;
             text-align: center;
         }
 
-        .about p, .music p, .gallery p, .tour p {
+        .about p, .music p, .gallery p {
             font-size: 1.1rem;
             line-height: 1.6;
             color: #cccccc;
@@ -347,7 +359,6 @@
             }
         }
     </style>
-    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&display=swap" rel="stylesheet">
 </head>
 <body>
     <header>
@@ -363,7 +374,7 @@
                 <li class="dropdown">
                     <a href="#livestreams">Livestreams</a>
                     <div class="dropdown-content">
-                        <a href="https://www.twitch.tv/samsagewize" target="_blank">Twitch</a>
+                        <a href="https://www.twitch.tv/samsagesats" target="_blank">Twitch</a>
                     </div>
                 </li>
             </ul>
@@ -378,14 +389,12 @@
             <a href="https://music.apple.com/us/artist/sam-sage/1022465537" target="_blank" class="cta-button">Listen Now</a>
         </div>
     </section>
-    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&display=swap" rel="stylesheet">
-</head>
-<body>
-       <section class="about" id="about">
+
+    <section class="about" id="about">
         <h2>About Sam Sage</h2>
         <p>Christian Fortuno, better known as Sam Sage, is a dynamic Singer-Songwriter and Producer from Puerto Rico, known for his unique blend of Reggaeton and Trap music that resonates in both English and Spanish. With over 10 years of experience in the industry, Sam has cultivated a signature style marked by melodic richness and a heartfelt, loving feel that runs through every track.</p>
         <p>Born in Puerto Rico, Sam’s deep cultural roots and passion for music shine through his compositions, creating a sound that feels both authentic and innovative. He has had the opportunity to collaborate with notable artists such as Bryant Myers and Kendo Kaponi, further cementing his place within the Latin music scene and showcasing his ability to blend diverse influences into his work. As a composer for various artists and an audio engineer of his own vocals, he brings a multifaceted skill set to every project, ensuring that each production is polished, emotive, and distinctly his own.</p>
-        <p>Currently making waves on the Latin music scene in Austin (ATX), Sam Sage is the artist to watch as he continues to gain momentum.  <a href="https://schedule.sxsw.com/2025/artists/2205872" target="_blank">SXSW 2025</a>.</p>
+        <p>Currently making waves on the Latin music scene in Austin (ATX), Sam Sage is the artist to watch as he continues to gain momentum. Check out his upcoming performance at <a href="https://schedule.sxsw.com/2025/artists/2205872" target="_blank">SXSW 2025</a>.</p>
     </section>
 
     <section class="music" id="music">
@@ -425,6 +434,7 @@
         </div>
         <div class="brand-logos">
             <img src="Screenshot 2023-12-30 013303.png" alt="Ordinooki">
+        </div>
     </footer>
 
     <script>
