@@ -38,11 +38,19 @@
         }
 
         nav .logo {
-            font-size: 1.5rem;
-            font-weight: 700;
-            color: #bb33ff;
-            text-transform: uppercase;
-            letter-spacing: 2px;
+            display: flex;
+            align-items: center;
+        }
+
+        nav .logo img {
+            max-height: 50px; /* Adjust size as needed */
+            width: auto;
+            filter: drop-shadow(0 0 5px #bb33ff); /* Purple glow effect */
+            transition: filter 0.3s ease;
+        }
+
+        nav .logo img:hover {
+            filter: drop-shadow(0 0 10px #bb33ff);
         }
 
         nav ul {
@@ -339,6 +347,10 @@
                 background: none;
                 padding: 10px 0;
             }
+
+            nav .logo img {
+                max-height: 40px; /* Smaller logo on mobile */
+            }
         }
     </style>
     <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&display=swap" rel="stylesheet">
@@ -346,7 +358,10 @@
 <body>
     <header>
         <nav>
-            <div class="logo">Sam Sage</div>
+            <div style="flex: 1;"></div> <!-- Spacer to push logo to the right -->
+            <div class="logo">
+                <a href="#home"><img src="IMG_1414.jpg" alt="Sam Sage Logo"></a>
+            </div>
             <ul>
                 <li><a href="#home">Home</a></li>
                 <li><a href="#about">About</a></li>
@@ -381,21 +396,10 @@
         <h2>Music</h2>
         <div class="music-grid">
             <div class="music-card">
-                <img src="https://source.unsplash.com/random/300x300?album,purple" alt="Album 1">
-                <h3>Starlight Vibes</h3>
+                <img src="https://open.spotify.com/album/4HFHiNx3nbwib9ZtnBCNR6" alt="YWH">
+                <h3>YWH</h3>
                 <p>2025 Release</p>
             </div>
-            <div class="music-card">
-                <img src="https://source.unsplash.com/random/300x300?music,purple" alt="Album 2">
-                <h3>Neon Dreams</h3>
-                <p>2024 Release</p>
-            </div>
-            <div class="music-card">
-                <img src="https://source.unsplash.com/random/300x300?pop,purple" alt="Album 3">
-                <h3>Cosmic Echoes</h3>
-                <p>2023 Release</p>
-            </div>
-        </div>
     </section>
 
     <section class="gallery" id="gallery">
@@ -417,26 +421,8 @@
         </div>
     </section>
 
-    <section class="tour" id="tour">
-        <h2>Tour Dates</h2>
-        <div class="tour-dates">
-            <div class="tour-date">
-                <span>June 15, 2025 - Cosmic City</span>
-                <button class="cta-button">Get Tickets</button>
-            </div>
-            <div class="tour-date">
-                <span>July 20, 2025 - Starlight Arena</span>
-                <button class="cta-button">Get Tickets</button>
-            </div>
-            <div class="tour-date">
-                <span>August 10, 2025 - Nebula Dome</span>
-                <button class="cta-button">Get Tickets</button>
-            </div>
-        </div>
-    </section>
-
     <footer>
-        <p>© 2025 Sam Sage. All Rights Reserved.</p>
+        <p>© 2025 URUA LABS. All Rights Reserved.</p>
         <div class="social-links">
             <a href="https://open.spotify.com/artist/3o7QHIT3xAl7YM7nd9QiTk" target="_blank">Spotify</a>
             <a href="https://www.instagram.com/samsagewize/" target="_blank">Instagram</a>
@@ -444,7 +430,7 @@
             <a href="https://www.twitch.tv/samsagewize" target="_blank">Twitch</a>
         </div>
         <div class="brand-logos">
-            <img src="https://source.unsplash.com/random/100x100?logo,purple" alt="Brand Logo 1">
+            <img src="Screenshot 2023-12-30 013303.png" alt="Ordinooki">
             <img src="https://source.unsplash.com/random/100x100?logo,neon" alt="Brand Logo 2">
             <img src="https://source.unsplash.com/random/100x100?logo,music" alt="Brand Logo 3">
         </div>
