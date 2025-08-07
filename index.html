@@ -6,6 +6,32 @@
     <title>Sam Sage | Official Website</title>
     <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&display=swap" rel="stylesheet">
     <style>
+        :root {
+            --background-color: #0a0a0a;
+            --text-color: #ffffff;
+            --text-secondary: #cccccc;
+            --accent-color: #bb33ff;
+            --header-bg: rgba(0, 0, 0, 0.8);
+            --section-overlay: rgba(0, 0, 0, 0.6);
+            --footer-border: #333;
+            --dropdown-bg: rgba(0, 0, 0, 0.9);
+            --cta-border: #bb33ff;
+            --gallery-overlay: rgba(187, 51, 255, 0.3);
+        }
+
+        body.light-mode {
+            --background-color: #f5f5f5;
+            --text-color: #333333;
+            --text-secondary: #666666;
+            --accent-color: #8a2be2;
+            --header-bg: rgba(255, 255, 255, 0.9);
+            --section-overlay: rgba(255, 255, 255, 0.5);
+            --footer-border: #cccccc;
+            --dropdown-bg: rgba(255, 255, 255, 0.9);
+            --cta-border: #8a2be2;
+            --gallery-overlay: rgba(138, 43, 226, 0.3);
+        }
+
         * {
             margin: 0;
             padding: 0;
@@ -19,8 +45,8 @@
         }
 
         body {
-            background: #0a0a0a;
-            color: #ffffff;
+            background: var(--background-color);
+            color: var(--text-color);
             overflow-x: hidden;
         }
 
@@ -28,7 +54,7 @@
             position: fixed;
             top: 0;
             width: 100%;
-            background: rgba(0, 0, 0, 0.8);
+            background: var(--header-bg);
             backdrop-filter: blur(10px);
             z-index: 1000;
             padding: 20px 0;
@@ -51,12 +77,12 @@
         nav .logo img {
             max-height: 50px;
             width: auto;
-            filter: drop-shadow(0 0 5px #bb33ff);
+            filter: drop-shadow(0 0 5px var(--accent-color));
             transition: filter 0.3s ease;
         }
 
         nav .logo img:hover {
-            filter: drop-shadow(0 0 10px #bb33ff);
+            filter: drop-shadow(0 0 10px var(--accent-color));
         }
 
         nav ul {
@@ -73,14 +99,14 @@
         }
 
         nav ul li a {
-            color: #ffffff;
+            color: var(--text-color);
             text-decoration: none;
             font-size: 1rem;
             transition: color 0.3s ease;
         }
 
         nav ul li a:hover {
-            color: #bb33ff;
+            color: var(--accent-color);
         }
 
         .dropdown {
@@ -92,7 +118,7 @@
             position: absolute;
             top: 100%;
             left: 0;
-            background: rgba(0, 0, 0, 0.9);
+            background: var(--dropdown-bg);
             min-width: 150px;
             border-radius: 5px;
             padding: 10px 0;
@@ -106,20 +132,33 @@
         .dropdown-content a {
             display: block;
             padding: 10px 20px;
-            color: #ffffff;
+            color: var(--text-color);
             text-decoration: none;
             font-size: 0.9rem;
         }
 
         .dropdown-content a:hover {
-            background: #bb33ff;
-            color: #0a0a0a;
+            background: var(--accent-color);
+            color: var(--background-color);
         }
 
         .menu-toggle {
             display: none;
-            color: #bb33ff;
+            color: var(--accent-color);
             font-size: 1.5rem;
+        }
+
+        .theme-toggle {
+            background: transparent;
+            border: none;
+            color: var(--accent-color);
+            font-size: 1.5rem;
+            cursor: pointer;
+            transition: transform 0.3s ease;
+        }
+
+        .theme-toggle:hover {
+            transform: scale(1.2);
         }
 
         .hero {
@@ -140,7 +179,7 @@
             left: 0;
             width: 100%;
             height: 100%;
-            background: rgba(0, 0, 0, 0.6);
+            background: var(--section-overlay);
             z-index: 1;
         }
 
@@ -159,10 +198,10 @@
 
         @keyframes neon-glow {
             from {
-                text-shadow: 0 0 10px #bb33ff, 0 0 20px #bb33ff, 0 0 30px #bb33ff;
+                text-shadow: 0 0 10px var(--accent-color), 0 0 20px var(--accent-color), 0 0 30px var(--accent-color);
             }
             to {
-                text-shadow: 0 0 20px #bb33ff, 0 0 30px #bb33ff, 0 0 40px #bb33ff;
+                text-shadow: 0 0 20px var(--accent-color), 0 0 30px var(--accent-color), 0 0 40px var(--accent-color);
             }
         }
 
@@ -178,14 +217,14 @@
         .hero p {
             font-size: 1.2rem;
             margin-bottom: 30px;
-            color: #cccccc;
+            color: var(--text-secondary);
         }
 
         .cta-button {
             padding: 15px 30px;
             background: transparent;
-            border: 2px solid #bb33ff;
-            color: #bb33ff;
+            border: 2px solid var(--cta-border);
+            color: var(--accent-color);
             font-size: 1rem;
             text-transform: uppercase;
             text-decoration: none;
@@ -194,8 +233,8 @@
         }
 
         .cta-button:hover {
-            background: #bb33ff;
-            color: #0a0a0a;
+            background: var(--accent-color);
+            color: var(--background-color);
         }
 
         section {
@@ -220,7 +259,7 @@
             left: 0;
             width: 100%;
             height: 100%;
-            background: rgba(0, 0, 0, 0.6);
+            background: var(--section-overlay);
             z-index: 1;
         }
 
@@ -232,26 +271,26 @@
         .about h2, .music h2, .gallery h2 {
             font-size: 2.5rem;
             margin-bottom: 30px;
-            color: #bb33ff;
+            color: var(--accent-color);
             text-align: center;
         }
 
         .about p, .music p, .gallery p {
             font-size: 1.1rem;
             line-height: 1.6;
-            color: #cccccc;
+            color: var(--text-secondary);
             text-align: center;
         }
 
         .about a {
-            color: #bb33ff;
+            color: var(--accent-color);
             text-decoration: none;
             font-weight: 700;
             transition: color 0.3s ease;
         }
 
         .about a:hover {
-            color: #ffffff;
+            color: var(--text-color);
         }
 
         .music-container {
@@ -261,7 +300,7 @@
         }
 
         .music-container iframe {
-            border: 2px solid #bb33ff;
+            border: 2px solid var(--accent-color);
             border-radius: 10px;
             max-width: 100%;
             height: 400px;
@@ -298,7 +337,7 @@
             left: 0;
             width: 100%;
             height: 100%;
-            background: rgba(187, 51, 255, 0.3);
+            background: var(--gallery-overlay);
             opacity: 0;
             transition: opacity 0.3s ease;
         }
@@ -308,19 +347,19 @@
         }
 
         footer {
-            background: #0a0a0a;
+            background: var(--background-color);
             padding: 40px 20px;
             text-align: center;
-            border-top: 1px solid #333;
+            border-top: 1px solid var(--footer-border);
         }
 
         footer p {
-            color: #cccccc;
+            color: var(--text-secondary);
             margin-bottom: 20px;
         }
 
         footer .social-links a {
-            color: #bb33ff;
+            color: var(--accent-color);
             margin: 0 15px;
             text-decoration: none;
             font-size: 1.2rem;
@@ -359,7 +398,7 @@
                 top: 70px;
                 left: 0;
                 width: 100%;
-                background: rgba(0, 0, 0, 0.9);
+                background: var(--dropdown-bg);
                 padding: 20px;
                 display: none;
             }
@@ -370,6 +409,11 @@
 
             .menu-toggle {
                 display: block;
+            }
+
+            .theme-toggle {
+                font-size: 1.2rem;
+                margin-left: 10px;
             }
 
             .dropdown-content {
@@ -398,20 +442,23 @@
             <div class="logo">
                 <a href="#home"><img src="IMG_1414.jpg" alt="Sam Sage Logo"></a>
             </div>
-          <ul>
-    <li><a href="#home">Home</a></li>
-    <li><a href="#about">About</a></li>
-    <li><a href="#music">Music</a></li>
-    <li><a href="#gallery">Gallery</a></li>
-    <li class="dropdown">
-        <a href="#livestreams">Livestreams</a>
-        <div class="dropdown-content">
-            <a href="https://kick.com/samsagewize" target="_blank">Kick</a>
-        </div>
-    </li>
-    <li><a href="https://uru.printify.me" target="_blank">Store</a></li>
-</ul>
+            <ul>
+                <li><a href="#home">Home</a></li>
+                <li><a href="#about">About</a></li>
+                <li><a href="#music">Music</a></li>
+                <li><a href="#gallery">Gallery</a></li>
+                <li class="dropdown">
+                    <a href="#livestreams">Livestreams</a>
+                    <div class="dropdown-content">
+                        <a href="https://kick.com/samsagewize" target="_blank">Kick</a>
+                    </div>
+                </li>
+                <li><a href="https://uru.printify.me" target="_blank">Store</a></li>
+            </ul>
             <div class="menu-toggle">☰</div>
+            <button class="theme-toggle" aria-label="Toggle theme">
+                <span class="theme-icon">🌙</span>
+            </button>
         </nav>
     </header>
 
@@ -438,7 +485,6 @@
         </div>
     </section>
 
-
     <footer>
         <p>© 2025 URUA LABS. All Rights Reserved.</p>
         <div class="social-links">
@@ -453,15 +499,40 @@
     </footer>
 
     <script>
+        // Menu toggle functionality
         const menuToggle = document.querySelector('.menu-toggle');
         const navMenu = document.querySelector('nav ul');
 
         menuToggle.addEventListener('click', () => {
             navMenu.classList.toggle('active');
         });
+
+        // Theme toggle functionality
+        const themeToggle = document.querySelector('.theme-toggle');
+        const themeIcon = document.querySelector('.theme-icon');
+
+        // Load saved theme from localStorage
+        if (localStorage.getItem('theme') === 'light') {
+            document.body.classList.add('light-mode');
+            themeIcon.textContent = '☀';
+        } else {
+            themeIcon.textContent = '🌙';
+        }
+
+        // Toggle theme on button click
+        themeToggle.addEventListener('click', () => {
+            document.body.classList.toggle('light-mode');
+            if (document.body.classList.contains('light-mode')) {
+                themeIcon.textContent = '☀';
+                localStorage.setItem('theme', 'light');
+            } else {
+                themeIcon.textContent = '🌙';
+                localStorage.setItem('theme', 'dark');
+            }
+        });
     </script>
 
-<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-3195519808820915"
-     crossorigin="anonymous"></script>
+    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-3195519808820915"
+        crossorigin="anonymous"></script>
 </body>
 </html>
