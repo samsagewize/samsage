@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Sam Sage | Official Website</title>
     <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&display=swap" rel="stylesheet">
+    <script src="https://unpkg.com/@solana/web3.js@1.87.6/lib/index.iife.min.js"></script>
     <style>
         :root {
             --background-color: #0a0a0a;
@@ -268,14 +269,14 @@
             z-index: 2;
         }
 
-        .about h2, .music h2, .gallery h2 {
+        .about h2, .music h2, .gallery h2, .wallet h2 {
             font-size: 2.5rem;
             margin-bottom: 30px;
             color: var(--accent-color);
             text-align: center;
         }
 
-        .about p, .music p, .gallery p {
+        .about p, .music p, .gallery p, .wallet p {
             font-size: 1.1rem;
             line-height: 1.6;
             color: var(--text-secondary);
@@ -344,6 +345,95 @@
 
         .gallery-item:hover::before {
             opacity: 1;
+        }
+
+        .wallet-container {
+            max-width: 400px;
+            margin: 0 auto;
+            padding: 20px;
+            border-radius: 20px;
+            background: var(--section-overlay);
+            backdrop-filter: blur(10px);
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
+            transition: transform 0.3s ease;
+        }
+
+        .wallet-container:hover {
+            transform: scale(1.02);
+        }
+
+        .wallet-logo {
+            width: 150px;
+            height: 150px;
+            margin: 0 auto 20px;
+            border-radius: 50%;
+            background: var(--background-color);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 4em;
+            color: var(--accent-color);
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+            100% { transform: scale(1); }
+        }
+
+        .wallet-container button {
+            background: linear-gradient(45deg, var(--accent-color), #8a2be2);
+            color: var(--background-color);
+            border: none;
+            padding: 15px 30px;
+            font-size: 1.2em;
+            cursor: pointer;
+            border-radius: 50px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+            transition: all 0.3s ease;
+            width: 100%;
+            margin-bottom: 20px;
+        }
+
+        .wallet-container button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.3);
+        }
+
+        .wallet-container button:disabled {
+            opacity: 0.7;
+            cursor: not-allowed;
+        }
+
+        #wallet-address {
+            font-size: 0.9em;
+            word-break: break-all;
+            margin-bottom: 10px;
+            opacity: 0.8;
+            font-family: monospace;
+            color: var(--text-secondary);
+        }
+
+        #balance {
+            font-size: 2.5em;
+            font-weight: bold;
+            margin-top: 20px;
+            color: #FFD700;
+            animation: fadeIn 1s ease-in;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .wallet-info {
+            font-size: 0.8em;
+            margin-top: 20px;
+            opacity: 0.7;
+            color: var(--text-secondary);
         }
 
         footer {
@@ -433,34 +523,39 @@
             .about {
                 min-height: 400px;
             }
+
+            .wallet-container {
+                padding: 15px;
+            }
         }
     </style>
 </head>
 <body>
     <header>
-     <nav>
-    <div class="logo">
-        <a href="#home"><img src="IMG_1414.jpg" alt="Sam Sage Logo"></a>
-    </div>
-    <ul>
-        <li><a href="#home">Home</a></li>
-        <li><a href="#about">About</a></li>
-        <li><a href="#music">Music</a></li>
-        <li><a href="#gallery">Gallery</a></li>
-        <li class="dropdown">
-            <a href="#livestreams">Livestreams</a>
-            <div class="dropdown-content">
-                <a href="https://kick.com/samsagewize" target="_blank">Kick</a>
+        <nav>
+            <div class="logo">
+                <a href="#home"><img src="IMG_1414.jpg" alt="Sam Sage Logo"></a>
             </div>
-        </li>
-        <li><a href="https://uru.printify.me" target="_blank">Store</a></li>
-        <li><a href="https://pump.fun/coin/weArMCzqbGAcFTkd2mnTLgsbpDsoA2id5d26tATnkHW" target="_blank">Gucci</a></li>
-    </ul>
-    <div class="menu-toggle">☰</div>
-    <button class="theme-toggle" aria-label="Toggle theme">
-        <span class="theme-icon">🌙</span>
-    </button>
-</nav>
+            <ul>
+                <li><a href="#home">Home</a></li>
+                <li><a href="#about">About</a></li>
+                <li><a href="#music">Music</a></li>
+                <li><a href="#gallery">Gallery</a></li>
+                <li class="dropdown">
+                    <a href="#livestreams">Livestreams</a>
+                    <div class="dropdown-content">
+                        <a href="https://kick.com/samsagewize" target="_blank">Kick</a>
+                    </div>
+                </li>
+                <li><a href="https://uru.printify.me" target="_blank">Store</a></li>
+                <li><a href="https://pump.fun/coin/weArMCzqbGAcFTkd2mnTLgsbpDsoA2id5d26tATnkHW" target="_blank">Gucci</a></li>
+                <li><a href="#wallet">$SAMSAGE</a></li>
+            </ul>
+            <div class="menu-toggle">☰</div>
+            <button class="theme-toggle" aria-label="Toggle theme">
+                <span class="theme-icon">🌙</span>
+            </button>
+        </nav>
     </header>
 
     <section class="hero" id="home">
@@ -483,6 +578,18 @@
         <p>Dive into the sound of Sam Sage on Spotify.</p>
         <div class="music-container">
             <iframe src="https://open.spotify.com/embed/artist/3o7QHIT3xAl7YM7nd9QiTk" width="100%" height="400" frameborder="0" allowtransparency="true" allow="encrypted-media"></iframe>
+        </div>
+    </section>
+
+    <section class="wallet" id="wallet">
+        <h2>$SAMSAGE Token</h2>
+        <p>The wise memecoin blending Sam & Sage on Solana. Total Supply: 1,000,000,000 $SAMSAGE</p>
+        <div class="wallet-container">
+            <div class="wallet-logo">🍃</div>
+            <button id="connectBtn">Connect Phantom Wallet</button>
+            <div id="wallet-address"></div>
+            <div id="balance">0 $SAMSAGE</div>
+            <div class="wallet-info">Mint Address: 8Eu56eBrzP3aFcmAz23fCGyHaZkqBqFdPhHojob5pump<br>Connect to view your balance!</div>
         </div>
     </section>
 
@@ -531,11 +638,82 @@
                 localStorage.setItem('theme', 'dark');
             }
         });
+
+        // Wallet integration
+        const connectBtn = document.getElementById('connectBtn');
+        const walletDiv = document.getElementById('wallet-address');
+        const balanceDiv = document.getElementById('balance');
+        let walletPublicKey = null;
+
+        connectBtn.addEventListener('click', async () => {
+            if (typeof window.solana !== 'undefined') {
+                const provider = window.solana;
+                if (provider.isPhantom) {
+                    try {
+                        // Connect to Phantom
+                        const resp = await provider.connect();
+                        walletPublicKey = resp.publicKey.toString();
+                        walletDiv.textContent = `Connected: ${walletPublicKey.slice(0, 4)}...${walletPublicKey.slice(-4)}`;
+                        connectBtn.textContent = 'Wallet Connected';
+                        connectBtn.disabled = true;
+                        connectBtn.style.background = '#8a2be2';
+                        
+                        // Fetch balance
+                        await fetchBalance();
+                    } catch (err) {
+                        console.error('Error connecting to wallet:', err);
+                        alert('Failed to connect. Please try again.');
+                    }
+                } else {
+                    alert('Phantom wallet detected but not connected properly. Please refresh and try again.');
+                }
+            } else {
+                alert('Phantom wallet not found. Please install it from https://phantom.app/');
+            }
+        });
+
+        async function fetchBalance() {
+            if (!walletPublicKey) return;
+
+            const connection = new solanaWeb3.Connection(solanaWeb3.clusterApiUrl('mainnet-beta'), 'confirmed');
+            const mintPublicKey = new solanaWeb3.PublicKey('8Eu56eBrzP3aFcmAz23fCGyHaZkqBqFdPhHojob5pump');
+
+            try {
+                // Get token accounts for this mint
+                const tokenAccounts = await connection.getParsedTokenAccountsByOwner(
+                    new solanaWeb3.PublicKey(walletPublicKey),
+                    {
+                        mint: mintPublicKey
+                    }
+                );
+
+                let totalBalance = 0;
+                for (const account of tokenAccounts.value) {
+                    const info = account.account.data.parsed.info;
+                    totalBalance += Number(info.tokenAmount.uiAmountString || 0);
+                }
+
+                balanceDiv.textContent = `${totalBalance.toLocaleString()} $SAMSAGE`;
+                if (totalBalance > 0) {
+                    balanceDiv.style.color = '#FFD700';
+                } else {
+                    balanceDiv.style.color = '#cccccc';
+                }
+            } catch (err) {
+                console.error('Error fetching balance:', err);
+                balanceDiv.textContent = 'Error loading balance';
+            }
+        }
+
+        // Auto-refresh balance every 30 seconds if connected
+        setInterval(() => {
+            if (walletPublicKey) {
+                fetchBalance();
+            }
+        }, 30000);
     </script>
 
     <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-3195519808820915"
         crossorigin="anonymous"></script>
 </body>
 </html>
-
-
