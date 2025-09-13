@@ -436,6 +436,24 @@
             color: var(--text-secondary);
         }
 
+        #retryBtn {
+            display: none;
+            background: transparent;
+            border: 2px solid var(--cta-border);
+            color: var(--accent-color);
+            padding: 10px 20px;
+            font-size: 1em;
+            cursor: pointer;
+            border-radius: 50px;
+            margin-top: 10px;
+            transition: all 0.3s ease;
+        }
+
+        #retryBtn:hover {
+            background: var(--accent-color);
+            color: var(--background-color);
+        }
+
         footer {
             background: var(--background-color);
             padding: 40px 20px;
@@ -589,6 +607,7 @@
             <button id="connectBtn">Connect Phantom Wallet</button>
             <div id="wallet-address"></div>
             <div id="balance">0 $SAMSAGE</div>
+            <button id="retryBtn">Retry Balance</button>
             <div class="wallet-info">Mint Address: 8Eu56eBrzP3aFcmAz23fCGyHaZkqBqFdPhHojob5pump<br>Connect to view your balance!</div>
         </div>
     </section>
@@ -643,6 +662,7 @@
         const connectBtn = document.getElementById('connectBtn');
         const walletDiv = document.getElementById('wallet-address');
         const balanceDiv = document.getElementById('balance');
+        const retryBtn = document.getElementById('retryBtn');
         let walletPublicKey = null;
 
         connectBtn.addEventListener('click', async () => {
@@ -662,7 +682,7 @@
                         await fetchBalance();
                     } catch (err) {
                         console.error('Error connecting to wallet:', err);
-                        alert('Failed to connect. Please try again.');
+                        alert('Failed to connect to Phantom Wallet. Please ensure it is unlocked and try again.');
                     }
                 } else {
                     alert('Phantom wallet detected but not connected properly. Please refresh and try again.');
@@ -672,37 +692,65 @@
             }
         });
 
+        retryBtn.addEventListener('click', async () => {
+            if (walletPublicKey) {
+                retryBtn.style.display = 'none';
+                await fetchBalance();
+            }
+        });
+
         async function fetchBalance() {
             if (!walletPublicKey) return;
 
-            const connection = new solanaWeb3.Connection(solanaWeb3.clusterApiUrl('mainnet-beta'), 'confirmed');
+            // Use QuickNode RPC with fallback to Solana public RPC
+            const rpcEndpoints = [
+                'https://api.mainnet-beta.solana.com', // Solana public RPC (fallback)
+                'https://solana-mainnet.rpc.extrnode.com' // QuickNode public RPC
+            ];
+
             const mintPublicKey = new solanaWeb3.PublicKey('8Eu56eBrzP3aFcmAz23fCGyHaZkqBqFdPhHojob5pump');
+            let connection = null;
+            let errorMessage = 'Error loading balance. Please try again.';
 
-            try {
-                // Get token accounts for this mint
-                const tokenAccounts = await connection.getParsedTokenAccountsByOwner(
-                    new solanaWeb3.PublicKey(walletPublicKey),
-                    {
-                        mint: mintPublicKey
+            for (const endpoint of rpcEndpoints) {
+                try {
+                    connection = new solanaWeb3.Connection(endpoint, 'confirmed');
+                    // Test connection with a lightweight call
+                    await connection.getSlot();
+
+                    // Get token accounts for this mint
+                    const tokenAccounts = await connection.getParsedTokenAccountsByOwner(
+                        new solanaWeb3.PublicKey(walletPublicKey),
+                        { mint: mintPublicKey }
+                    );
+
+                    let totalBalance = 0;
+                    for (const account of tokenAccounts.value) {
+                        const info = account.account.data.parsed.info;
+                        totalBalance += Number(info.tokenAmount.uiAmountString || 0);
                     }
-                );
 
-                let totalBalance = 0;
-                for (const account of tokenAccounts.value) {
-                    const info = account.account.data.parsed.info;
-                    totalBalance += Number(info.tokenAmount.uiAmountString || 0);
+                    balanceDiv.textContent = `${totalBalance.toLocaleString()} $SAMSAGE`;
+                    if (totalBalance > 0) {
+                        balanceDiv.style.color = '#FFD700';
+                    } else {
+                        balanceDiv.style.color = '#cccccc';
+                    }
+                    retryBtn.style.display = 'none';
+                    return; // Success, exit loop
+                } catch (err) {
+                    console.error(`Error fetching balance from ${endpoint}:`, err);
+                    if (err.message.includes('429')) {
+                        errorMessage = 'Rate limit exceeded. Please try again later.';
+                    } else if (err.message.includes('network')) {
+                        errorMessage = 'Network error. Please check your connection and try again.';
+                    }
                 }
-
-                balanceDiv.textContent = `${totalBalance.toLocaleString()} $SAMSAGE`;
-                if (totalBalance > 0) {
-                    balanceDiv.style.color = '#FFD700';
-                } else {
-                    balanceDiv.style.color = '#cccccc';
-                }
-            } catch (err) {
-                console.error('Error fetching balance:', err);
-                balanceDiv.textContent = 'Error loading balance';
             }
+
+            // If all RPCs fail
+            balanceDiv.textContent = errorMessage;
+            retryBtn.style.display = 'block';
         }
 
         // Auto-refresh balance every 30 seconds if connected
