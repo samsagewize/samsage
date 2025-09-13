@@ -636,6 +636,7 @@
             <a href="https://www.instagram.com/samsagewize/" target="_blank">Instagram</a>
             <a href="https://www.youtube.com/@SamSageWize" target="_blank">YouTube</a>
             <a href="https://www.twitch.tv/samsagesats" target="_blank">Twitch</a>
+            <a href="mailto:support@samsage.com">Contact Support</a>
         </div>
         <div class="brand-logos">
             <img src="Screenshot 2023-12-30 013303.png" alt="Ordinooki">
@@ -696,6 +697,9 @@
                         connectBtn.disabled = true;
                         connectBtn.style.background = '#8a2be2';
 
+                        // Verify network (Phantom doesn't expose getNetwork, so prompt user)
+                        alert('Please ensure your Phantom Wallet is set to Solana Mainnet.');
+
                         // Fetch balance
                         await fetchBalance();
                     } catch (err) {
@@ -724,50 +728,71 @@
             balanceDiv.textContent = '';
             retryBtn.style.display = 'none';
 
-            // Use a single reliable RPC endpoint (replace with your own)
-            const rpcEndpoint = 'https://solana-mainnet.g.alchemy.com/v2/YOUR_ALCHEMY_API_KEY'; // Replace with your Alchemy API key
-            const mintPublicKey = new solanaWeb3.PublicKey('8Eu56eBrzP3aFcmAz23fCGyHaZkqBqFdPhHojob5pump');
+            // Use primary and fallback RPC endpoints
+            const rpcEndpoints = [
+                'https://solana-mainnet.g.alchemy.com/v2/YOUR_ALCHEMY_API_KEY', // Replace with your Alchemy API key
+                'https://api.mainnet-beta.solana.com' // Fallback public RPC
+            ];
+            const mintAddress = '8Eu56eBrzP3aFcmAz23fCGyHaZkqBqFdPhHojob5pump';
 
+            // Validate mint address
             try {
-                console.log(`Attempting to fetch balance from ${rpcEndpoint}`);
-                const connection = new solanaWeb3.Connection(rpcEndpoint, 'confirmed');
-
-                // Test connection
-                await connection.getSlot();
-
-                // Get token accounts for this mint
-                const tokenAccounts = await connection.getParsedTokenAccountsByOwner(
-                    new solanaWeb3.PublicKey(walletPublicKey),
-                    { mint: mintPublicKey }
-                );
-
-                let totalBalance = 0;
-                if (tokenAccounts.value.length === 0) {
-                    balanceDiv.textContent = 'No $SAMSAGE tokens found in this wallet.';
-                    balanceDiv.style.color = '#cccccc';
-                } else {
-                    for (const account of tokenAccounts.value) {
-                        const info = account.account.data.parsed.info;
-                        totalBalance += Number(info.tokenAmount.uiAmountString || 0);
-                    }
-                    balanceDiv.textContent = `${totalBalance.toLocaleString()} $SAMSAGE`;
-                    balanceDiv.style.color = totalBalance > 0 ? '#FFD700' : '#cccccc';
-                }
-                loadingDiv.style.display = 'none';
+                new solanaWeb3.PublicKey(mintAddress);
             } catch (err) {
-                console.error(`Error fetching balance from ${rpcEndpoint}:`, err);
-                let errorMessage = 'Failed to load balance. Please try again.';
-                if (err.message.includes('429')) {
-                    errorMessage = 'Rate limit exceeded. Please try again later.';
-                } else if (err.message.includes('network') || err.message.includes('Failed to fetch')) {
-                    errorMessage = 'Unable to connect to Solana network. Check your internet connection.';
-                } else if (err.message.includes('Invalid public key')) {
-                    errorMessage = 'Invalid token mint address. Please contact support.';
-                }
-                balanceDiv.textContent = errorMessage;
+                console.error('Invalid mint address:', err);
+                balanceDiv.textContent = 'Invalid token mint address. Please contact support.';
                 retryBtn.style.display = 'block';
                 loadingDiv.style.display = 'none';
+                return;
             }
+
+            const mintPublicKey = new solanaWeb3.PublicKey(mintAddress);
+
+            for (const endpoint of rpcEndpoints) {
+                try {
+                    console.log(`Attempting to fetch balance from ${endpoint}`);
+                    const connection = new solanaWeb3.Connection(endpoint, 'confirmed');
+
+                    // Test connection
+                    await connection.getSlot();
+
+                    // Get token accounts for this mint
+                    const tokenAccounts = await connection.getParsedTokenAccountsByOwner(
+                        new solanaWeb3.PublicKey(walletPublicKey),
+                        { mint: mintPublicKey }
+                    );
+
+                    let totalBalance = 0;
+                    if (tokenAccounts.value.length === 0) {
+                        balanceDiv.textContent = 'No $SAMSAGE tokens found in this wallet.';
+                        balanceDiv.style.color = '#cccccc';
+                    } else {
+                        for (const account of tokenAccounts.value) {
+                            const info = account.account.data.parsed.info;
+                            totalBalance += Number(info.tokenAmount.uiAmountString || 0);
+                        }
+                        balanceDiv.textContent = `${totalBalance.toLocaleString()} $SAMSAGE`;
+                        balanceDiv.style.color = totalBalance > 0 ? '#FFD700' : '#cccccc';
+                    }
+                    loadingDiv.style.display = 'none';
+                    return; // Success, exit loop
+                } catch (err) {
+                    console.error(`Error fetching balance from ${endpoint}:`, err);
+                    let errorMessage = 'Failed to load balance. Please try again.';
+                    if (err.message.includes('429')) {
+                        errorMessage = 'Rate limit exceeded. Please try again later.';
+                    } else if (err.message.includes('network') || err.message.includes('Failed to fetch')) {
+                        errorMessage = 'Unable to connect to Solana network. Check your internet connection.';
+                    } else if (err.message.includes('Invalid public key')) {
+                        errorMessage = 'Invalid token mint address. Please contact support.';
+                    }
+                    balanceDiv.textContent = errorMessage;
+                }
+            }
+
+            // All RPCs failed
+            retryBtn.style.display = 'block';
+            loadingDiv.style.display = 'none';
         }
 
         // Auto-refresh balance every 60 seconds if connected
