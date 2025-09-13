@@ -454,6 +454,13 @@
             color: var(--background-color);
         }
 
+        #loading {
+            display: none;
+            font-size: 1em;
+            color: var(--text-secondary);
+            margin-top: 10px;
+        }
+
         footer {
             background: var(--background-color);
             padding: 40px 20px;
@@ -607,6 +614,7 @@
             <button id="connectBtn">Connect Phantom Wallet</button>
             <div id="wallet-address"></div>
             <div id="balance">0 $SAMSAGE</div>
+            <div id="loading">Loading balance...</div>
             <button id="retryBtn">Retry Balance</button>
             <div class="wallet-info">Mint Address: 8Eu56eBrzP3aFcmAz23fCGyHaZkqBqFdPhHojob5pump<br>Connect to view your balance!</div>
         </div>
@@ -663,6 +671,7 @@
         const walletDiv = document.getElementById('wallet-address');
         const balanceDiv = document.getElementById('balance');
         const retryBtn = document.getElementById('retryBtn');
+        const loadingDiv = document.getElementById('loading');
         let walletPublicKey = null;
 
         connectBtn.addEventListener('click', async () => {
@@ -702,10 +711,15 @@
         async function fetchBalance() {
             if (!walletPublicKey) return;
 
-            // Use QuickNode RPC with fallback to Solana public RPC
+            loadingDiv.style.display = 'block';
+            balanceDiv.textContent = '';
+            retryBtn.style.display = 'none';
+
+            // Use multiple RPC endpoints for redundancy
             const rpcEndpoints = [
-                'https://api.mainnet-beta.solana.com', // Solana public RPC (fallback)
-                'https://solana-mainnet.rpc.extrnode.com' // QuickNode public RPC
+                'https://solana-mainnet.g.alchemy.com/v2/demo', // Alchemy public RPC
+                'https://solana-mainnet.rpc.extrnode.com', // QuickNode public RPC
+                'https://api.mainnet-beta.solana.com' // Solana public RPC
             ];
 
             const mintPublicKey = new solanaWeb3.PublicKey('8Eu56eBrzP3aFcmAz23fCGyHaZkqBqFdPhHojob5pump');
@@ -714,8 +728,9 @@
 
             for (const endpoint of rpcEndpoints) {
                 try {
+                    console.log(`Attempting to fetch balance from ${endpoint}`);
                     connection = new solanaWeb3.Connection(endpoint, 'confirmed');
-                    // Test connection with a lightweight call
+                    // Test connection
                     await connection.getSlot();
 
                     // Get token accounts for this mint
@@ -725,9 +740,13 @@
                     );
 
                     let totalBalance = 0;
-                    for (const account of tokenAccounts.value) {
-                        const info = account.account.data.parsed.info;
-                        totalBalance += Number(info.tokenAmount.uiAmountString || 0);
+                    if (tokenAccounts.value.length === 0) {
+                        console.log('No token accounts found for this mint.');
+                    } else {
+                        for (const account of tokenAccounts.value) {
+                            const info = account.account.data.parsed.info;
+                            totalBalance += Number(info.tokenAmount.uiAmountString || 0);
+                        }
                     }
 
                     balanceDiv.textContent = `${totalBalance.toLocaleString()} $SAMSAGE`;
@@ -736,7 +755,7 @@
                     } else {
                         balanceDiv.style.color = '#cccccc';
                     }
-                    retryBtn.style.display = 'none';
+                    loadingDiv.style.display = 'none';
                     return; // Success, exit loop
                 } catch (err) {
                     console.error(`Error fetching balance from ${endpoint}:`, err);
@@ -744,6 +763,8 @@
                         errorMessage = 'Rate limit exceeded. Please try again later.';
                     } else if (err.message.includes('network')) {
                         errorMessage = 'Network error. Please check your connection and try again.';
+                    } else if (err.message.includes('Failed to fetch')) {
+                        errorMessage = 'Failed to connect to Solana network. Please try again.';
                     }
                 }
             }
@@ -751,6 +772,7 @@
             // If all RPCs fail
             balanceDiv.textContent = errorMessage;
             retryBtn.style.display = 'block';
+            loadingDiv.style.display = 'none';
         }
 
         // Auto-refresh balance every 30 seconds if connected
