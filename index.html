@@ -42,6 +42,15 @@
         <p class="text-xl text-gray-600">Discover and enjoy short videos from the community</p>
       </div>
 
+      <!-- Guest Encouragement Message (visible only to non-logged-in users) -->
+      <div id="guest-message" class="text-center my-12">
+        <p class="text-2xl text-gray-700 mb-6">Watch amazing videos from the community</p>
+        <p class="text-xl text-gray-600 mb-8">Want to upload your own? It's free and fast!</p>
+        <button id="guest-signup-btn" class="bg-indigo-600 hover:bg-indigo-700 text-white px-8 py-4 rounded-xl font-bold text-xl transition shadow-lg">
+          Sign Up Now
+        </button>
+      </div>
+
       <!-- Upload Section (Only for logged-in users) -->
       <section id="upload-section" class="hidden bg-white p-8 rounded-xl shadow-lg mb-12">
         <h2 class="text-2xl font-bold mb-6 text-center">Upload a New Video</h2>
@@ -107,13 +116,13 @@
   </main>
 
   <script type="module">
-    // Firebase Imports (Latest modular SDK)
+    // Firebase Imports (Modular SDK v10+)
     import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
     import { getAuth, onAuthStateChanged, signInWithEmailAndPassword, createUserWithEmailAndPassword, signOut } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js";
     import { getFirestore, collection, addDoc, deleteDoc, doc, updateDoc, query, where, onSnapshot, serverTimestamp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
     import { getStorage, ref, uploadBytesResumable, getDownloadURL, deleteObject } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-storage.js";
 
-    // === YOUR REAL FIREBASE CONFIG ===
+    // Your Real Firebase Config
     const firebaseConfig = {
       apiKey: "AIzaSyANmYfZHO-kQDixZD7ksHccb1nxlD-UunA",
       authDomain: "viro-8e580.firebaseapp.com",
@@ -164,6 +173,9 @@
     const emailInput = document.getElementById('email');
     const passwordInput = document.getElementById('password');
 
+    const guestMessage = document.getElementById('guest-message');
+    const guestSignupBtn = document.getElementById('guest-signup-btn');
+
     let currentUser = null;
 
     // Auth state observer
@@ -178,19 +190,22 @@
       profilePage.classList.add('hidden');
       renderPublicVideos();
     }
+
     function showProfile() {
       if (!currentUser) {
-        alert("Please log in to view your profile");
+        alert("Please sign up or log in to view your profile");
+        showAuth(false);
         return;
       }
       homePage.classList.add('hidden');
       profilePage.classList.remove('hidden');
       renderMyVideos();
     }
+
     homeBtn.onclick = showHome;
     profileBtn.onclick = showProfile;
 
-    // File selection
+    // File selection display
     videoFile.addEventListener('change', () => {
       selectedFileDisplay.textContent = videoFile.files[0] ? `Selected: ${videoFile.files[0].name}` : '';
     });
@@ -225,22 +240,29 @@
 
     logoutBtn.onclick = () => signOut(auth);
 
-    // UI Update
+    // UI Update – controls visibility for guests vs logged-in users
     function updateUI() {
       if (currentUser) {
         authSection.classList.add('hidden');
         profileSection.classList.remove('hidden');
         uploadSection.classList.remove('hidden');
         currentUserSpan.textContent = currentUser.email.split('@')[0];
+        guestMessage.classList.add('hidden');
       } else {
         authSection.classList.remove('hidden');
         profileSection.classList.add('hidden');
         uploadSection.classList.add('hidden');
+        guestMessage.classList.remove('hidden');
       }
-      renderPublicVideos();
+      renderPublicVideos(); // Public videos always visible to everyone
     }
 
-    // Create video card
+    // Guest Sign Up button
+    if (guestSignupBtn) {
+      guestSignupBtn.onclick = () => showAuth(true);
+    }
+
+    // Create video card (shared for public and profile)
     function createVideoCard(video, videoId, isMyVideo) {
       const card = document.createElement('div');
       card.className = 'bg-white rounded-xl shadow-lg overflow-hidden hover:shadow-2xl transition';
@@ -276,7 +298,7 @@
           await updateDoc(doc(db, 'videos', videoId), { posted: !video.posted });
         });
         card.querySelector('.delete-btn').addEventListener('click', async () => {
-          if (confirm('Permanently delete this video?')) {
+          if (confirm('Permanently delete this video? This cannot be undone.')) {
             await deleteObject(ref(storage, video.storagePath));
             await deleteDoc(doc(db, 'videos', videoId));
           }
@@ -285,7 +307,7 @@
       return card;
     }
 
-    // Real-time public videos
+    // Real-time public videos (visible to everyone)
     function renderPublicVideos() {
       const q = query(collection(db, 'videos'), where('posted', '==', true));
       onSnapshot(q, (snapshot) => {
@@ -301,7 +323,7 @@
       });
     }
 
-    // Real-time my videos
+    // Real-time my videos (only for logged-in user)
     function renderMyVideos() {
       if (!currentUser) return;
       const q = query(collection(db, 'videos'), where('userId', '==', currentUser.uid));
