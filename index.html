@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Simple Video Sharing Site</title>
   <!-- Tailwind CSS CDN for quick styling -->
-  <script src="cdn.tailwindcss.com"></script>
+  <script src="https://cdn.tailwindcss.com"></script>
   <style>
     video { max-width: 100%; height: auto; }
     .hidden { display: none; }
@@ -43,12 +43,27 @@
       <button id="logout-btn" class="bg-red-600 text-white px-4 py-2 rounded">Logout</button>
     </div>
 
-    <!-- Upload Section (visible only when logged in) -->
+    <!-- Upload Section (visible only when logged in) - Personalized & Improved -->
     <section id="upload-section" class="hidden bg-white p-6 rounded shadow-md mb-8">
       <h2 class="text-xl font-bold mb-4">Upload a Video</h2>
-      <input type="text" id="video-title" placeholder="Video Title" class="w-full p-2 border rounded mb-4"/>
-      <input type="file" id="video-file" accept="video/*" class="w-full p-2 border rounded mb-4"/>
-      <button id="upload-btn" class="bg-green-600 text-white px-4 py-2 rounded">Upload Video</button>
+      <input type="text" id="video-title" placeholder="Video Title" class="w-full p-3 border border-gray-300 rounded mb-4 focus:outline-none focus:ring-2 focus:ring-blue-500"/>
+
+      <!-- Custom file upload area -->
+      <div class="border-2 border-dashed border-gray-400 rounded-lg p-8 text-center hover:border-blue-500 transition">
+        <input type="file" id="video-file" accept="video/*" class="hidden"/>
+        <label for="video-file" class="cursor-pointer">
+          <svg class="mx-auto h-12 w-12 text-gray-400 mb-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12"/>
+          </svg>
+          <p class="text-lg font-medium text-gray-700">Click to upload or drag and drop</p>
+          <p class="text-sm text-gray-500 mt-2">MP4, AVI, MOV, etc. (max size depends on browser)</p>
+        </label>
+        <p id="selected-file" class="mt-4 text-sm text-gray-600"></p>
+      </div>
+
+      <button id="upload-btn" class="mt-6 bg-green-600 hover:bg-green-700 text-white px-6 py-3 rounded font-medium transition">
+        Upload Video
+      </button>
       <p id="upload-progress" class="mt-4 text-gray-600"></p>
     </section>
 
@@ -83,6 +98,16 @@
     const uploadBtn = document.getElementById('upload-btn');
     const uploadProgress = document.getElementById('upload-progress');
     const videoGrid = document.getElementById('video-grid');
+    const selectedFileDisplay = document.getElementById('selected-file');
+
+    // Show selected file name when user picks a video
+    videoFile.addEventListener('change', () => {
+      if (videoFile.files.length > 0) {
+        selectedFileDisplay.textContent = `Selected: ${videoFile.files[0].name}`;
+      } else {
+        selectedFileDisplay.textContent = '';
+      }
+    });
 
     // Show auth forms
     function showAuth(isSignup = false) {
@@ -144,6 +169,7 @@
         authSection.classList.remove('hidden');
         userInfo.classList.add('hidden');
         uploadSection.classList.add('hidden');
+        selectedFileDisplay.textContent = ''; // clear file name on logout
       }
     }
 
@@ -187,6 +213,7 @@
         localStorage.setItem('videos', JSON.stringify(videos));
         videoTitle.value = '';
         videoFile.value = '';
+        selectedFileDisplay.textContent = '';
         uploadProgress.textContent = 'Upload complete!';
         setTimeout(() => { uploadProgress.textContent = ''; }, 3000);
         renderVideos();
