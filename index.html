@@ -16,10 +16,14 @@
   <!-- Header -->
   <header class="bg-blue-600 text-white p-4 shadow-md sticky top-0 z-10">
     <div class="max-w-6xl mx-auto flex justify-between items-center">
-      <h1 class="text-3xl font-bold">MyVideoShare</h1>
-      <div id="auth-section">
+      <button id="home-btn" class="text-3xl font-bold hover:opacity-80 transition">MyVideoShare</button>
+      <div id="auth-section" class="flex items-center">
         <button id="login-btn" class="bg-white text-blue-600 px-5 py-2 rounded-lg font-medium mr-3 hover:bg-gray-100 transition">Login</button>
         <button id="signup-btn" class="bg-white text-blue-600 px-5 py-2 rounded-lg font-medium hover:bg-gray-100 transition">Sign Up</button>
+      </div>
+      <div id="profile-section" class="hidden flex items-center">
+        <span class="mr-4 text-lg">Welcome, <strong id="current-user" class="text-white"></strong>!</span>
+        <button id="logout-btn" class="bg-red-600 text-white px-5 py-2 rounded-lg font-medium hover:bg-red-700 transition">Logout</button>
       </div>
     </div>
   </header>
@@ -31,12 +35,6 @@
     <div class="text-center my-10">
       <h2 class="text-4xl font-bold text-gray-800 mb-4">Welcome to MyVideoShare</h2>
       <p class="text-xl text-gray-600">Discover and share amazing videos with the community</p>
-    </div>
-
-    <!-- Logged-in User Info -->
-    <div id="user-info" class="hidden bg-white p-5 rounded-lg shadow-md mb-8 flex justify-between items-center">
-      <span class="text-lg">Welcome back, <strong id="current-user" class="text-blue-600"></strong>!</span>
-      <button id="logout-btn" class="bg-red-600 text-white px-5 py-3 rounded-lg font-medium hover:bg-red-700 transition">Logout</button>
     </div>
 
     <!-- Upload Section (Only for logged-in users) -->
@@ -53,7 +51,7 @@
           </svg>
           <p class="text-2xl font-semibold text-gray-700">Click to upload video</p>
           <p class="text-lg text-gray-500 mt-3">or drag and drop</p>
-          <p class="text-sm text-gray-400 mt-4">Supports MP4, WebM, MOV (smaller files work best)</p>
+          <p class="text-sm text-gray-400 mt-4">Supports MP4, WebM, MOV (smaller files recommended, max 10MB for best results)</p>
         </label>
         <p id="selected-file" class="mt-6 text-lg font-medium text-blue-700"></p>
       </div>
@@ -74,7 +72,7 @@
         <p class="mt-6 text-center text-lg">
           <a href="#" id="auth-toggle" class="text-blue-600 font-medium hover:underline">Don't have an account? Sign Up</a>
         </p>
-        <button id="close-auth" class="mt-4 text-gray-500 hover:text-gray-700">Close</button>
+        <button id="close-auth" class="mt-4 text-gray-500 hover:text-gray-700 w-full text-center">Close</button>
       </div>
     </div>
 
@@ -84,7 +82,7 @@
       <div id="video-grid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
         <!-- Videos loaded here -->
       </div>
-      <p id="no-videos" class="text-center text-xl text-gray-500 py-20">No videos uploaded yet. Be the first to share one!</p>
+      <p id="no-videos" class="text-center text-xl text-gray-500 py-20 hidden">No videos uploaded yet. Be the first to share one!</p>
     </section>
 
   </main>
@@ -96,9 +94,11 @@
     let currentUser = null;
 
     // DOM Elements
+    const homeBtn = document.getElementById('home-btn');
     const loginBtn = document.getElementById('login-btn');
     const signupBtn = document.getElementById('signup-btn');
     const authSection = document.getElementById('auth-section');
+    const profileSection = document.getElementById('profile-section');
     const authForms = document.getElementById('auth-forms');
     const authTitle = document.getElementById('auth-title');
     const authSubmit = document.getElementById('auth-submit');
@@ -106,7 +106,6 @@
     const closeAuth = document.getElementById('close-auth');
     const usernameInput = document.getElementById('username');
     const passwordInput = document.getElementById('password');
-    const userInfo = document.getElementById('user-info');
     const currentUserSpan = document.getElementById('current-user');
     const logoutBtn = document.getElementById('logout-btn');
     const uploadSection = document.getElementById('upload-section');
@@ -121,7 +120,11 @@
     // Show selected filename
     videoFile.addEventListener('change', () => {
       if (videoFile.files.length > 0) {
-        selectedFileDisplay.textContent = `Selected: ${videoFile.files[0].name}`;
+        const file = videoFile.files[0];
+        if (file.size > 10 * 1024 * 1024) { // 10MB limit warning
+          alert('File is larger than 10MB. For best results, use smaller videos.');
+        }
+        selectedFileDisplay.textContent = `Selected: ${file.name}`;
       } else {
         selectedFileDisplay.textContent = '';
       }
@@ -183,12 +186,12 @@
     function updateUI() {
       if (currentUser) {
         authSection.classList.add('hidden');
-        userInfo.classList.remove('hidden');
+        profileSection.classList.remove('hidden');
         uploadSection.classList.remove('hidden');
         currentUserSpan.textContent = currentUser;
       } else {
         authSection.classList.remove('hidden');
-        userInfo.classList.add('hidden');
+        profileSection.classList.add('hidden');
         uploadSection.classList.add('hidden');
       }
       renderVideos();
@@ -199,13 +202,23 @@
       videoGrid.innerHTML = '';
       if (videos.length === 0) {
         noVideosMsg.classList.remove('hidden');
-        return;
+      } else {
+        noVideosMsg.classList.add('hidden');
       }
-      noVideosMsg.classList.add('hidden');
 
-      videos.forEach((video) => {
+      videos.forEach((video, index) => {
         const card = document.createElement('div');
         card.className = 'bg-white rounded-xl shadow-lg overflow-hidden hover:shadow-2xl transition';
+        const isLiked = video.likes.includes(currentUser);
+        const likeIcon = isLiked ? '❤️' : '♡';
+        const commentsHtml = video.comments.map(c => `<p class="text-gray-700"><strong>${c.user}:</strong> ${c.text}</p>`).join('');
+        const commentForm = currentUser ? `
+          <div class="mt-4">
+            <input type="text" placeholder="Add a comment..." class="w-full p-2 border rounded mb-2 comment-input" data-index="${index}"/>
+            <button class="bg-blue-600 text-white px-4 py-2 rounded comment-btn" data-index="${index}">Comment</button>
+          </div>
+        ` : '';
+
         card.innerHTML = `
           <video controls poster="" class="w-full h-64 object-cover">
             <source src="${video.url}" type="video/mp4">
@@ -213,11 +226,57 @@
           </video>
           <div class="p-6">
             <h3 class="font-bold text-xl mb-2">${video.title}</h3>
-            <p class="text-gray-600">Uploaded by <span class="font-medium">${video.user}</span></p>
+            <p class="text-gray-600 mb-4">Uploaded by <span class="font-medium">${video.user}</span></p>
+            <div class="flex items-center mb-4">
+              <button class="like-btn mr-2 text-2xl ${isLiked ? 'text-red-500' : 'text-gray-500'}" data-index="${index}">${likeIcon}</button>
+              <span>${video.likes.length} likes</span>
+            </div>
+            <div class="comments-section">
+              ${commentsHtml}
+              ${commentForm}
+            </div>
           </div>
         `;
         videoGrid.appendChild(card);
       });
+
+      // Add event listeners for likes and comments after rendering
+      document.querySelectorAll('.like-btn').forEach(btn => {
+        btn.addEventListener('click', handleLike);
+      });
+      document.querySelectorAll('.comment-btn').forEach(btn => {
+        btn.addEventListener('click', handleComment);
+      });
+    }
+
+    // Handle like
+    function handleLike(e) {
+      if (!currentUser) {
+        alert('Please log in to like videos');
+        return;
+      }
+      const index = e.target.dataset.index;
+      const video = videos[index];
+      const userIndex = video.likes.indexOf(currentUser);
+      if (userIndex === -1) {
+        video.likes.push(currentUser);
+      } else {
+        video.likes.splice(userIndex, 1);
+      }
+      localStorage.setItem('videos', JSON.stringify(videos));
+      renderVideos();
+    }
+
+    // Handle comment
+    function handleComment(e) {
+      const index = e.target.dataset.index;
+      const input = document.querySelector(`.comment-input[data-index="${index}"]`);
+      const text = input.value.trim();
+      if (!text) return;
+      videos[index].comments.push({ user: currentUser, text });
+      localStorage.setItem('videos', JSON.stringify(videos));
+      input.value = '';
+      renderVideos();
     }
 
     // Upload video
@@ -230,6 +289,11 @@
         return;
       }
 
+      if (file.size > 50 * 1024 * 1024) { // Arbitrary 50MB limit to prevent issues
+        alert('File too large. Please use videos under 50MB.');
+        return;
+      }
+
       uploadProgress.textContent = 'Uploading your video...';
       uploadBtn.disabled = true;
 
@@ -238,7 +302,9 @@
         const videoObj = {
           title,
           url: e.target.result,
-          user: currentUser
+          user: currentUser,
+          likes: [],
+          comments: []
         };
         videos.push(videoObj);
         localStorage.setItem('videos', JSON.stringify(videos));
@@ -259,7 +325,7 @@
       };
 
       reader.onerror = () => {
-        alert('Error reading file. Try a smaller video.');
+        alert('Error reading file. Try again or use a smaller video.');
         uploadProgress.textContent = '';
         uploadBtn.disabled = false;
       };
@@ -268,6 +334,7 @@
     };
 
     // Event Listeners
+    homeBtn.onclick = () => window.scrollTo({ top: 0, behavior: 'smooth' });
     loginBtn.onclick = () => showAuth(false);
     signupBtn.onclick = () => showAuth(true);
     authToggle.onclick = (e) => {
