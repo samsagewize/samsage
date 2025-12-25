@@ -3,78 +3,94 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Simple Video Sharing Site</title>
-  <!-- Tailwind CSS CDN for quick styling -->
+  <title>MyVideoShare - Share Your Videos</title>
+  <!-- Tailwind CSS CDN -->
   <script src="https://cdn.tailwindcss.com"></script>
   <style>
-    video { max-width: 100%; height: auto; }
+    video { max-width: 100%; height: auto; border-radius: 8px; }
     .hidden { display: none; }
   </style>
 </head>
 <body class="bg-gray-100 font-sans">
 
   <!-- Header -->
-  <header class="bg-blue-600 text-white p-4 shadow-md">
+  <header class="bg-blue-600 text-white p-4 shadow-md sticky top-0 z-10">
     <div class="max-w-6xl mx-auto flex justify-between items-center">
-      <h1 class="text-2xl font-bold">MyVideoShare</h1>
+      <h1 class="text-3xl font-bold">MyVideoShare</h1>
       <div id="auth-section">
-        <button id="login-btn" class="bg-white text-blue-600 px-4 py-2 rounded mr-2">Login</button>
-        <button id="signup-btn" class="bg-white text-blue-600 px-4 py-2 rounded">Sign Up</button>
+        <button id="login-btn" class="bg-white text-blue-600 px-5 py-2 rounded-lg font-medium mr-3 hover:bg-gray-100 transition">Login</button>
+        <button id="signup-btn" class="bg-white text-blue-600 px-5 py-2 rounded-lg font-medium hover:bg-gray-100 transition">Sign Up</button>
       </div>
     </div>
   </header>
 
   <!-- Main Content -->
-  <main class="max-w-6xl mx-auto p-4">
-    <!-- Auth Forms (hidden by default) -->
-    <div id="auth-forms" class="hidden bg-white p-6 rounded shadow-md max-w-md mx-auto mb-8">
-      <h2 id="auth-title" class="text-xl font-bold mb-4">Login</h2>
-      <input type="text" id="username" placeholder="Username" class="w-full p-2 border rounded mb-4"/>
-      <input type="password" id="password" placeholder="Password" class="w-full p-2 border rounded mb-4"/>
-      <button id="auth-submit" class="bg-blue-600 text-white px-4 py-2 rounded w-full">Login</button>
-      <p class="mt-4 text-center">
-        <a href="#" id="auth-toggle" class="text-blue-600">Don't have an account? Sign Up</a>
-      </p>
+  <main class="max-w-6xl mx-auto p-6">
+
+    <!-- Welcome / Home Message -->
+    <div class="text-center my-10">
+      <h2 class="text-4xl font-bold text-gray-800 mb-4">Welcome to MyVideoShare</h2>
+      <p class="text-xl text-gray-600">Discover and share amazing videos with the community</p>
     </div>
 
     <!-- Logged-in User Info -->
-    <div id="user-info" class="hidden bg-white p-4 rounded shadow-md mb-8 flex justify-between items-center">
-      <span>Welcome, <strong id="current-user"></strong>!</span>
-      <button id="logout-btn" class="bg-red-600 text-white px-4 py-2 rounded">Logout</button>
+    <div id="user-info" class="hidden bg-white p-5 rounded-lg shadow-md mb-8 flex justify-between items-center">
+      <span class="text-lg">Welcome back, <strong id="current-user" class="text-blue-600"></strong>!</span>
+      <button id="logout-btn" class="bg-red-600 text-white px-5 py-3 rounded-lg font-medium hover:bg-red-700 transition">Logout</button>
     </div>
 
-    <!-- Upload Section (visible only when logged in) - Personalized & Improved -->
-    <section id="upload-section" class="hidden bg-white p-6 rounded shadow-md mb-8">
-      <h2 class="text-xl font-bold mb-4">Upload a Video</h2>
-      <input type="text" id="video-title" placeholder="Video Title" class="w-full p-3 border border-gray-300 rounded mb-4 focus:outline-none focus:ring-2 focus:ring-blue-500"/>
+    <!-- Upload Section (Only for logged-in users) -->
+    <section id="upload-section" class="hidden bg-white p-8 rounded-xl shadow-lg mb-12">
+      <h2 class="text-2xl font-bold mb-6 text-center">Upload Your Video</h2>
+      <input type="text" id="video-title" placeholder="Enter video title..." class="w-full p-4 border border-gray-300 rounded-lg mb-6 focus:outline-none focus:ring-2 focus:ring-blue-500 text-lg"/>
 
-      <!-- Custom file upload area -->
-      <div class="border-2 border-dashed border-gray-400 rounded-lg p-8 text-center hover:border-blue-500 transition">
+      <!-- Custom Upload Area -->
+      <div class="border-4 border-dashed border-blue-300 rounded-xl p-12 text-center hover:border-blue-500 transition bg-blue-50">
         <input type="file" id="video-file" accept="video/*" class="hidden"/>
-        <label for="video-file" class="cursor-pointer">
-          <svg class="mx-auto h-12 w-12 text-gray-400 mb-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <label for="video-file" class="cursor-pointer block">
+          <svg class="mx-auto h-16 w-16 text-blue-500 mb-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12"/>
           </svg>
-          <p class="text-lg font-medium text-gray-700">Click to upload or drag and drop</p>
-          <p class="text-sm text-gray-500 mt-2">MP4, AVI, MOV, etc. (max size depends on browser)</p>
+          <p class="text-2xl font-semibold text-gray-700">Click to upload video</p>
+          <p class="text-lg text-gray-500 mt-3">or drag and drop</p>
+          <p class="text-sm text-gray-400 mt-4">Supports MP4, WebM, MOV (smaller files work best)</p>
         </label>
-        <p id="selected-file" class="mt-4 text-sm text-gray-600"></p>
+        <p id="selected-file" class="mt-6 text-lg font-medium text-blue-700"></p>
       </div>
 
-      <button id="upload-btn" class="mt-6 bg-green-600 hover:bg-green-700 text-white px-6 py-3 rounded font-medium transition">
+      <button id="upload-btn" class="mt-8 w-full bg-green-600 hover:bg-green-700 text-white py-4 rounded-lg font-bold text-xl transition shadow-md">
         Upload Video
       </button>
-      <p id="upload-progress" class="mt-4 text-gray-600"></p>
+      <p id="upload-progress" class="mt-6 text-center text-lg font-medium text-gray-700"></p>
     </section>
 
-    <!-- Video Grid -->
-    <section id="video-grid" class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
-      <!-- Videos will be injected here by JavaScript -->
+    <!-- Auth Forms -->
+    <div id="auth-forms" class="hidden fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
+      <div class="bg-white p-8 rounded-xl shadow-2xl max-w-md w-full">
+        <h2 id="auth-title" class="text-3xl font-bold mb-6 text-center">Login</h2>
+        <input type="text" id="username" placeholder="Username" class="w-full p-4 border border-gray-300 rounded-lg mb-5 focus:outline-none focus:ring-2 focus:ring-blue-500"/>
+        <input type="password" id="password" placeholder="Password" class="w-full p-4 border border-gray-300 rounded-lg mb-6 focus:outline-none focus:ring-2 focus:ring-blue-500"/>
+        <button id="auth-submit" class="w-full bg-blue-600 text-white py-4 rounded-lg font-bold text-xl hover:bg-blue-700 transition">Login</button>
+        <p class="mt-6 text-center text-lg">
+          <a href="#" id="auth-toggle" class="text-blue-600 font-medium hover:underline">Don't have an account? Sign Up</a>
+        </p>
+        <button id="close-auth" class="mt-4 text-gray-500 hover:text-gray-700">Close</button>
+      </div>
+    </div>
+
+    <!-- Video Gallery - Visible to Everyone -->
+    <section class="mb-12">
+      <h2 class="text-3xl font-bold text-gray-800 mb-8 text-center">Community Videos</h2>
+      <div id="video-grid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
+        <!-- Videos loaded here -->
+      </div>
+      <p id="no-videos" class="text-center text-xl text-gray-500 py-20">No videos uploaded yet. Be the first to share one!</p>
     </section>
+
   </main>
 
   <script>
-    // Simple in-memory "database" (resets on page refresh)
+    // Local storage database
     let users = JSON.parse(localStorage.getItem('users')) || {};
     let videos = JSON.parse(localStorage.getItem('videos')) || [];
     let currentUser = null;
@@ -87,6 +103,7 @@
     const authTitle = document.getElementById('auth-title');
     const authSubmit = document.getElementById('auth-submit');
     const authToggle = document.getElementById('auth-toggle');
+    const closeAuth = document.getElementById('close-auth');
     const usernameInput = document.getElementById('username');
     const passwordInput = document.getElementById('password');
     const userInfo = document.getElementById('user-info');
@@ -97,10 +114,11 @@
     const videoFile = document.getElementById('video-file');
     const uploadBtn = document.getElementById('upload-btn');
     const uploadProgress = document.getElementById('upload-progress');
-    const videoGrid = document.getElementById('video-grid');
     const selectedFileDisplay = document.getElementById('selected-file');
+    const videoGrid = document.getElementById('video-grid');
+    const noVideosMsg = document.getElementById('no-videos');
 
-    // Show selected file name when user picks a video
+    // Show selected filename
     videoFile.addEventListener('change', () => {
       if (videoFile.files.length > 0) {
         selectedFileDisplay.textContent = `Selected: ${videoFile.files[0].name}`;
@@ -109,11 +127,11 @@
       }
     });
 
-    // Show auth forms
+    // Show auth modal
     function showAuth(isSignup = false) {
       authForms.classList.remove('hidden');
       authTitle.textContent = isSignup ? 'Sign Up' : 'Login';
-      authSubmit.textContent = isSignup ? 'Sign Up' : 'Login';
+      authSubmit.textContent = isSignup ? 'Create Account' : 'Login';
       authToggle.textContent = isSignup ? 'Already have an account? Login' : "Don't have an account? Sign Up";
       authSubmit.onclick = isSignup ? signup : login;
     }
@@ -126,8 +144,7 @@
         currentUser = username;
         updateUI();
         authForms.classList.add('hidden');
-        usernameInput.value = '';
-        passwordInput.value = '';
+        clearAuthInputs();
       } else {
         alert('Invalid username or password');
       }
@@ -142,13 +159,18 @@
         return;
       }
       if (users[username]) {
-        alert('Username already exists');
+        alert('Username already taken');
         return;
       }
       users[username] = password;
       localStorage.setItem('users', JSON.stringify(users));
-      alert('Account created! You can now log in.');
-      showAuth(false); // switch to login
+      alert('Account created successfully! Please log in.');
+      showAuth(false);
+    }
+
+    function clearAuthInputs() {
+      usernameInput.value = '';
+      passwordInput.value = '';
     }
 
     // Logout
@@ -157,36 +179,41 @@
       updateUI();
     }
 
-    // Update UI based on login state
+    // Update UI
     function updateUI() {
       if (currentUser) {
         authSection.classList.add('hidden');
         userInfo.classList.remove('hidden');
         uploadSection.classList.remove('hidden');
         currentUserSpan.textContent = currentUser;
-        renderVideos();
       } else {
         authSection.classList.remove('hidden');
         userInfo.classList.add('hidden');
         uploadSection.classList.add('hidden');
-        selectedFileDisplay.textContent = ''; // clear file name on logout
       }
+      renderVideos();
     }
 
-    // Render all videos
+    // Render videos (visible to all)
     function renderVideos() {
       videoGrid.innerHTML = '';
-      videos.forEach((video, index) => {
+      if (videos.length === 0) {
+        noVideosMsg.classList.remove('hidden');
+        return;
+      }
+      noVideosMsg.classList.add('hidden');
+
+      videos.forEach((video) => {
         const card = document.createElement('div');
-        card.className = 'bg-white rounded shadow overflow-hidden';
+        card.className = 'bg-white rounded-xl shadow-lg overflow-hidden hover:shadow-2xl transition';
         card.innerHTML = `
-          <video controls>
+          <video controls poster="" class="w-full h-64 object-cover">
             <source src="${video.url}" type="video/mp4">
-            Your browser does not support the video tag.
+            Your browser does not support video playback.
           </video>
-          <div class="p-4">
-            <h3 class="font-bold text-lg">${video.title}</h3>
-            <p class="text-gray-600">Uploaded by: ${video.user}</p>
+          <div class="p-6">
+            <h3 class="font-bold text-xl mb-2">${video.title}</h3>
+            <p class="text-gray-600">Uploaded by <span class="font-medium">${video.user}</span></p>
           </div>
         `;
         videoGrid.appendChild(card);
@@ -197,29 +224,47 @@
     uploadBtn.onclick = () => {
       const title = videoTitle.value.trim();
       const file = videoFile.files[0];
+
       if (!title || !file) {
-        alert('Please provide a title and select a video file');
+        alert('Please add a title and select a video file');
         return;
       }
+
+      uploadProgress.textContent = 'Uploading your video...';
+      uploadBtn.disabled = true;
 
       const reader = new FileReader();
       reader.onload = (e) => {
         const videoObj = {
           title,
-          url: e.target.result, // data URL (works for demo, limited size)
+          url: e.target.result,
           user: currentUser
         };
         videos.push(videoObj);
         localStorage.setItem('videos', JSON.stringify(videos));
+
+        // Reset form
         videoTitle.value = '';
         videoFile.value = '';
         selectedFileDisplay.textContent = '';
-        uploadProgress.textContent = 'Upload complete!';
-        setTimeout(() => { uploadProgress.textContent = ''; }, 3000);
+
+        uploadProgress.textContent = 'Upload complete! 🎉';
+        uploadBtn.disabled = false;
+
+        setTimeout(() => {
+          uploadProgress.textContent = '';
+        }, 4000);
+
         renderVideos();
       };
+
+      reader.onerror = () => {
+        alert('Error reading file. Try a smaller video.');
+        uploadProgress.textContent = '';
+        uploadBtn.disabled = false;
+      };
+
       reader.readAsDataURL(file);
-      uploadProgress.textContent = 'Processing video... (this is a demo, using data URL)';
     };
 
     // Event Listeners
@@ -230,9 +275,15 @@
       const isSignup = authTitle.textContent === 'Login';
       showAuth(isSignup);
     };
+    closeAuth.onclick = () => authForms.classList.add('hidden');
     logoutBtn.onclick = logout;
 
-    // Initial render
+    // Close modal when clicking outside
+    authForms.onclick = (e) => {
+      if (e.target === authForms) authForms.classList.add('hidden');
+    };
+
+    // Initial load
     updateUI();
   </script>
 </body>
