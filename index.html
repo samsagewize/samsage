@@ -42,7 +42,7 @@
         <p class="text-xl text-gray-600">Discover and enjoy short videos from the community</p>
       </div>
 
-      <!-- Guest Encouragement Message -->
+      <!-- Guest Encouragement Message (visible only to non-logged-in users) -->
       <div id="guest-message" class="text-center my-12">
         <p class="text-2xl text-gray-700 mb-6">Watch amazing videos from the community</p>
         <p class="text-xl text-gray-600 mb-8">Want to upload your own? It's free and fast!</p>
@@ -51,7 +51,7 @@
         </button>
       </div>
 
-      <!-- Upload Section -->
+      <!-- Upload Section (Only for logged-in users) -->
       <section id="upload-section" class="hidden bg-white p-8 rounded-xl shadow-lg mb-12">
         <h2 class="text-2xl font-bold mb-6 text-center">Upload a New Video</h2>
         <input type="text" id="video-title" placeholder="Enter video title..." class="w-full p-4 border border-gray-300 rounded-lg mb-6 focus:outline-none focus:ring-2 focus:ring-indigo-500 text-lg"/>
@@ -99,18 +99,6 @@
       <p id="no-my-videos" class="text-center text-xl text-gray-500 py-20">You haven't uploaded any videos yet.</p>
     </section>
 
-    <!-- Username Setup Modal (shown only on first login) -->
-    <div id="username-modal" class="hidden fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
-      <div class="bg-white p-8 rounded-xl shadow-2xl max-w-md w-full">
-        <h2 class="text-3xl font-bold mb-6 text-center">Choose Your Username</h2>
-        <p class="text-gray-600 mb-6 text-center">This will be your public display name on Viro</p>
-        <input type="text" id="username-input" placeholder="Enter username (e.g. samsage67)" class="w-full p-4 border border-gray-300 rounded-lg mb-6 focus:outline-none focus:ring-2 focus:ring-indigo-500 text-lg"/>
-        <button id="save-username-btn" class="w-full bg-indigo-600 text-white py-4 rounded-lg font-bold text-xl hover:bg-indigo-700 transition">
-          Save Username
-        </button>
-      </div>
-    </div>
-
     <!-- Auth Modal -->
     <div id="auth-forms" class="hidden fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
       <div class="bg-white p-8 rounded-xl shadow-2xl max-w-md w-full">
@@ -128,13 +116,13 @@
   </main>
 
   <script type="module">
-    // Firebase Imports
+    // Firebase Imports (Modular SDK v10+)
     import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
     import { getAuth, onAuthStateChanged, signInWithEmailAndPassword, createUserWithEmailAndPassword, signOut } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js";
-    import { getFirestore, collection, addDoc, deleteDoc, doc, updateDoc, query, where, onSnapshot, serverTimestamp, getDoc, setDoc } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
+    import { getFirestore, collection, addDoc, deleteDoc, doc, updateDoc, query, where, onSnapshot, serverTimestamp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
     import { getStorage, ref, uploadBytesResumable, getDownloadURL, deleteObject } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-storage.js";
 
-    // Your Firebase Config
+    // Your Real Firebase Config
     const firebaseConfig = {
       apiKey: "AIzaSyANmYfZHO-kQDixZD7ksHccb1nxlD-UunA",
       authDomain: "viro-8e580.firebaseapp.com",
@@ -145,6 +133,7 @@
       measurementId: "G-K7GQKJH5KS"
     };
 
+    // Initialize Firebase
     const app = initializeApp(firebaseConfig);
     const auth = getAuth(app);
     const db = getFirestore(app);
@@ -187,55 +176,13 @@
     const guestMessage = document.getElementById('guest-message');
     const guestSignupBtn = document.getElementById('guest-signup-btn');
 
-    const usernameModal = document.getElementById('username-modal');
-    const usernameInput = document.getElementById('username-input');
-    const saveUsernameBtn = document.getElementById('save-username-btn');
-
     let currentUser = null;
-    let userProfile = null; // will hold { username, isAdmin }
 
     // Auth state observer
-    onAuthStateChanged(auth, async (user) => {
+    onAuthStateChanged(auth, (user) => {
       currentUser = user;
-      if (currentUser) {
-        // Load user profile from Firestore
-        const profileDoc = await getDoc(doc(db, 'users', currentUser.uid));
-        if (profileDoc.exists()) {
-          userProfile = profileDoc.data();
-        } else {
-          userProfile = null;
-        }
-
-        // Show username modal if no username yet
-        if (!userProfile || !userProfile.username) {
-          usernameModal.classList.remove('hidden');
-        }
-      } else {
-        userProfile = null;
-      }
       updateUI();
     });
-
-    // Save username (and set admin for samsage67)
-    saveUsernameBtn.onclick = async () => {
-      const username = usernameInput.value.trim();
-      if (!username) {
-        alert('Please enter a username');
-        return;
-      }
-
-      const isAdmin = username.toLowerCase() === 'samsage67';
-
-      await setDoc(doc(db, 'users', currentUser.uid), {
-        username: username,
-        isAdmin: isAdmin,
-        createdAt: serverTimestamp()
-      });
-
-      userProfile = { username, isAdmin };
-      usernameModal.classList.add('hidden');
-      updateUI();
-    };
 
     // Navigation
     function showHome() {
@@ -258,7 +205,7 @@
     homeBtn.onclick = showHome;
     profileBtn.onclick = showProfile;
 
-    // File selection
+    // File selection display
     videoFile.addEventListener('change', () => {
       selectedFileDisplay.textContent = videoFile.files[0] ? `Selected: ${videoFile.files[0].name}` : '';
     });
@@ -286,7 +233,6 @@
         await createUserWithEmailAndPassword(auth, emailInput.value.trim(), passwordInput.value);
         authForms.classList.add('hidden');
         emailInput.value = passwordInput.value = '';
-        // Username modal will appear automatically after first login
       } catch (e) {
         alert("Sign up failed: " + e.message);
       }
@@ -294,19 +240,13 @@
 
     logoutBtn.onclick = () => signOut(auth);
 
-    // UI Update
+    // UI Update – controls visibility for guests vs logged-in users
     function updateUI() {
-      if (currentUser && userProfile && userProfile.username) {
+      if (currentUser) {
         authSection.classList.add('hidden');
         profileSection.classList.remove('hidden');
         uploadSection.classList.remove('hidden');
-        currentUserSpan.textContent = userProfile.username + (userProfile.isAdmin ? ' (Admin)' : '');
-        guestMessage.classList.add('hidden');
-      } else if (currentUser) {
-        // Logged in but no username yet – modal is shown
-        authSection.classList.add('hidden');
-        profileSection.classList.add('hidden');
-        uploadSection.classList.add('hidden');
+        currentUserSpan.textContent = currentUser.email.split('@')[0];
         guestMessage.classList.add('hidden');
       } else {
         authSection.classList.remove('hidden');
@@ -314,7 +254,7 @@
         uploadSection.classList.add('hidden');
         guestMessage.classList.remove('hidden');
       }
-      renderPublicVideos();
+      renderPublicVideos(); // Public videos always visible to everyone
     }
 
     // Guest Sign Up button
@@ -322,7 +262,7 @@
       guestSignupBtn.onclick = () => showAuth(true);
     }
 
-    // Create video card
+    // Create video card (shared for public and profile)
     function createVideoCard(video, videoId, isMyVideo) {
       const card = document.createElement('div');
       card.className = 'bg-white rounded-xl shadow-lg overflow-hidden hover:shadow-2xl transition';
@@ -348,7 +288,7 @@
         </video>
         <div class="p-6">
           <h3 class="font-bold text-xl mb-2">${video.title}</h3>
-          <p class="text-gray-600">by <span class="font-medium">${video.username || video.userEmail.split('@')[0]}</span></p>
+          <p class="text-gray-600">by <span class="font-medium">${video.userEmail.split('@')[0]}</span></p>
         </div>
         ${controls}
       `;
@@ -367,31 +307,23 @@
       return card;
     }
 
-    // Real-time public videos
+    // Real-time public videos (visible to everyone)
     function renderPublicVideos() {
       const q = query(collection(db, 'videos'), where('posted', '==', true));
-      onSnapshot(q, async (snapshot) => {
+      onSnapshot(q, (snapshot) => {
         publicVideoGrid.innerHTML = '';
         if (snapshot.empty) {
           noPublicVideos.classList.remove('hidden');
         } else {
           noPublicVideos.classList.add('hidden');
         }
-        for (const docSnap of snapshot.docs) {
-          const data = docSnap.data();
-          // Fetch username if available
-          if (data.userId) {
-            const userDoc = await getDoc(doc(db, 'users', data.userId));
-            if (userDoc.exists()) {
-              data.username = userDoc.data().username;
-            }
-          }
-          publicVideoGrid.appendChild(createVideoCard(data, docSnap.id, false));
-        }
+        snapshot.forEach((docSnap) => {
+          publicVideoGrid.appendChild(createVideoCard(docSnap.data(), docSnap.id, false));
+        });
       });
     }
 
-    // Real-time my videos
+    // Real-time my videos (only for logged-in user)
     function renderMyVideos() {
       if (!currentUser) return;
       const q = query(collection(db, 'videos'), where('userId', '==', currentUser.uid));
@@ -403,20 +335,13 @@
           noMyVideos.classList.add('hidden');
         }
         snapshot.forEach((docSnap) => {
-          const data = docSnap.data();
-          data.username = userProfile.username;
-          myVideoGrid.appendChild(createVideoCard(data, docSnap.id, true));
+          myVideoGrid.appendChild(createVideoCard(docSnap.data(), docSnap.id, true));
         });
       });
     }
 
-    // Upload video – now saves with username
+    // Upload video
     uploadBtn.onclick = async () => {
-      if (!userProfile || !userProfile.username) {
-        alert('Please set your username first');
-        return;
-      }
-
       const title = videoTitle.value.trim();
       const file = videoFile.files[0];
       const postNow = postToHomeCheckbox.checked;
@@ -452,7 +377,6 @@
             storagePath,
             userId: currentUser.uid,
             userEmail: currentUser.email,
-            username: userProfile.username,
             posted: postNow,
             createdAt: serverTimestamp()
           });
