@@ -1,244 +1,212 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="Sam Sage - Puerto Rican Reggaeton/Trap Artist | URU 2 Out Now | Features, Beats, Services">
-    <meta name="keywords" content="Sam Sage, Reggaeton, Latin Trap, Puerto Rico, Austin Music, SXSW 2025">
-    <title>Sam Sage | Official Website</title>
-    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&display=swap" rel="stylesheet">
-    <style>
-        :root {
-            --background-color: #0a0a0a;
-            --text-color: #ffffff;
-            --text-secondary: #cccccc;
-            --accent-color: #bb33ff;
-            --header-bg: rgba(0, 0, 0, 0.8);
-            --section-overlay: rgba(0, 0, 0, 0.6);
-            --footer-border: #333;
-            --dropdown-bg: rgba(0, 0, 0, 0.9);
-            --cta-border: #bb33ff;
-            --gallery-overlay: rgba(187, 51, 255, 0.3);
-        }
-
-        body.light-mode {
-            --background-color: #f5f5f5;
-            --text-color: #333333;
-            --text-secondary: #666666;
-            --accent-color: #8a2be2;
-            --header-bg: rgba(255, 255, 255, 0.9);
-            --section-overlay: rgba(255, 255, 255, 0.5);
-            --footer-border: #cccccc;
-            --dropdown-bg: rgba(255, 255, 255, 0.9);
-            --cta-border: #8a2be2;
-            --gallery-overlay: rgba(138, 43, 226, 0.3);
-        }
-
-        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Orbitron', sans-serif; }
-        body { background: var(--background-color); color: var(--text-color); overflow-x: hidden; line-height: 1.6; }
-        html { scroll-behavior: smooth; }
-
-        header { position: fixed; top: 0; width: 100%; background: var(--header-bg); backdrop-filter: blur(10px); z-index: 1000; padding: 15px 0; transition: background 0.3s; }
-        nav { display: flex; justify-content: space-between; align-items: center; max-width: 1200px; margin: 0 auto; padding: 0 20px; }
-        nav .logo img { max-height: 60px; filter: drop-shadow(0 0 8px var(--accent-color)); transition: all 0.3s; }
-        nav .logo img:hover { filter: drop-shadow(0 0 15px var(--accent-color)); transform: scale(1.05); }
-        nav ul { display: flex; list-style: none; align-items: center; justify-content: center; flex-grow: 1; gap: 20px; }
-        nav ul li a { color: var(--text-color); text-decoration: none; font-size: 1.1rem; transition: all 0.3s; position: relative; }
-        nav ul li a:hover { color: var(--accent-color); }
-        nav ul li a::after { content: ''; position: absolute; bottom: -5px; left: 0; width: 0; height: 2px; background: var(--accent-color); transition: width 0.3s; }
-        nav ul li a:hover::after { width: 100%; }
-        .menu-toggle { display: none; color: var(--accent-color); font-size: 1.8rem; cursor: pointer; }
-        .theme-toggle { background: none; border: none; color: var(--accent-color); font-size: 1.8rem; cursor: pointer; }
-
-        .hero { height: 100vh; display: flex; flex-direction: column; justify-content: center; align-items: center; text-align: center;
-                background: url('image4 (2).jpeg') center/cover no-repeat fixed; position: relative; }
-        .hero::before { content: ''; position: absolute; inset: 0; background: var(--section-overlay); }
-        .hero-content { position: relative; z-index: 2; }
-        .hero h1 { font-size: 5rem; text-transform: uppercase; letter-spacing: 8px; animation: neon-glow 2s ease-in-out infinite alternate; }
-        .hero p.release { font-size: 2rem; margin: 20px 0; animation: pulse 2s infinite; }
-        @keyframes pulse { 0% { opacity: 0.8; } 50% { opacity: 1; } 100% { opacity: 0.8; } }
-        @keyframes neon-glow {
-            from { text-shadow: 0 0 10px var(--accent-color), 0 0 20px var(--accent-color); }
-            to { text-shadow: 0 0 20px var(--accent-color), 0 0 40px var(--accent-color), 0 0 60px var(--accent-color); }
-        }
-        .cta-buttons { display: flex; gap: 20px; flex-wrap: wrap; justify-content: center; margin-top: 30px; }
-        .cta-button { padding: 15px 35px; background: transparent; border: 2px solid var(--cta-border); color: var(--accent-color);
-                      text-transform: uppercase; text-decoration: none; border-radius: 50px; transition: all 0.4s; font-weight: bold; }
-        .cta-button:hover { background: var(--accent-color); color: var(--background-color); transform: translateY(-5px); box-shadow: 0 10px 20px rgba(187,51,255,0.3); }
-
-        section { padding: 100px 20px; max-width: 1200px; margin: 0 auto; }
-        h2 { font-size: 3rem; margin-bottom: 40px; color: var(--accent-color); text-align: center; position: relative; }
-        h2::after { content: ''; display: block; width: 100px; height: 3px; background: var(--accent-color); margin: 20px auto; }
-
-        .about p { font-size: 1.2rem; max-width: 800px; margin: 0 auto 20px; text-align: center; }
-
-        .music-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 30px; margin-top: 40px; }
-
-        .tour { background: rgba(0,0,0,0.4); border-radius: 20px; }
-        .tour-card { background: rgba(255,255,255,0.05); padding: 30px; border-radius: 15px; text-align: center; border: 1px solid var(--accent-color); }
-        .tour-card h3 { color: var(--accent-color); }
-
-        .discography-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 30px; }
-        .release-card { text-align: center; }
-        .release-card img { width: 100%; border-radius: 15px; box-shadow: 0 0 20px rgba(187,51,255,0.2); transition: transform 0.3s; }
-        .release-card img:hover { transform: scale(1.05); }
-
-        .newsletter { text-align: center; background: rgba(187,51,255,0.1); padding: 50px; border-radius: 20px; }
-        .newsletter form { max-width: 500px; margin: 20px auto; display: flex; }
-        .newsletter input { flex: 1; padding: 15px; border: none; border-radius: 50px 0 0 50px; }
-        .newsletter button { padding: 15px 30px; background: var(--accent-color); color: #000; border: none; border-radius: 0 50px 50px 0; cursor: pointer; font-weight: bold; }
-
-        .request-section { text-align: center; padding: 100px 20px; }
-        #requestBtn { background: linear-gradient(45deg, var(--accent-color), #8a2be2); color: #000; border: none; padding: 20px 50px;
-                      font-size: 1.5em; font-weight: bold; border-radius: 50px; cursor: pointer; box-shadow: 0 10px 30px rgba(187,51,255,0.4);
-                      transition: all 0.4s; }
-        #requestBtn:hover { transform: translateY(-8px); box-shadow: 0 15px 40px rgba(187,51,255,0.6); }
-
-        .modal { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.9); z-index: 2000; align-items: center; justify-content: center; }
-        .modal-content { background: var(--background-color); padding: 50px; border-radius: 20px; text-align: center; border: 3px solid var(--accent-color); max-width: 90%; box-shadow: 0 0 30px rgba(187,51,255,0.5); }
-        .modal button { display: block; width: 100%; margin: 20px 0; padding: 18px; background: transparent; border: 2px solid var(--accent-color);
-                        color: var(--text-color); font-size: 1.2em; border-radius: 15px; cursor: pointer; transition: all 0.3s; }
-        .modal button:hover { background: var(--accent-color); color: var(--background-color); }
-
-        footer { background: var(--background-color); padding: 60px 20px 30px; text-align: center; border-top: 1px solid var(--footer-border); }
-        .social-links { display: flex; justify-content: center; gap: 20px; flex-wrap: wrap; margin: 20px 0; }
-        .social-links a { color: var(--accent-color); font-size: 1.8rem; transition: transform 0.3s; }
-        .social-links a:hover { transform: scale(1.2); }
-
-        @media (max-width: 768px) {
-            .hero h1 { font-size: 3rem; letter-spacing: 4px; }
-            .hero p.release { font-size: 1.5rem; }
-            .cta-buttons { flex-direction: column; }
-            nav ul { display: none; flex-direction: column; position: absolute; top: 100%; left: 0; width: 100%; background: var(--dropdown-bg); padding: 30px; gap: 20px; }
-            nav ul.active { display: flex; }
-            .menu-toggle { display: block; }
-            section { padding: 80px 20px; }
-        }
-    </style>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Simple Video Sharing Site</title>
+  <!-- Tailwind CSS CDN for quick styling -->
+  <script src="cdn.tailwindcss.com"></script>
+  <style>
+    video { max-width: 100%; height: auto; }
+    .hidden { display: none; }
+  </style>
 </head>
-<body>
-    <header>
-        <nav>
-            <div class="logo"><a href="#home"><img src="IMG_1414.jpg" alt="Sam Sage Logo"></a></div>
-            <ul>
-                <li><a href="#home">Home</a></li>
-                <li><a href="#about">About</a></li>
-                <li><a href="#music">Music</a></li>
-                <li><a href="#tour">Tour</a></li>
-                <li><a href="#request">Services</a></li>
-                <li><a href="https://kick.com/samsagewize" target="_blank">Kick</a></li>
-                <li><a href="https://uru.printify.me" target="_blank">Store</a></li>
-            </ul>
-            <div class="menu-toggle" aria-label="Menu">☰</div>
-            <button class="theme-toggle" aria-label="Toggle theme"><span class="theme-icon">🌙</span></button>
-        </nav>
-    </header>
+<body class="bg-gray-100 font-sans">
 
-    <section class="hero" id="home">
-        <div class="hero-content">
-            <h1>Sam Sage</h1>
-            <p class="release">URU 2 OUT NOW</p>
-            <div class="cta-buttons">
-                <a href="https://open.spotify.com/artist/3o7QHIT3xAl7YM7nd9QiTk" target="_blank" class="cta-button">Spotify</a>
-                <a href="https://music.apple.com/us/artist/sam-sage/1022465537" target="_blank" class="cta-button">Apple Music</a>
-                <a href="https://www.youtube.com/@SamSageWize" target="_blank" class="cta-button">YouTube</a>
-            </div>
-        </div>
-    </section>
+  <!-- Header -->
+  <header class="bg-blue-600 text-white p-4 shadow-md">
+    <div class="max-w-6xl mx-auto flex justify-between items-center">
+      <h1 class="text-2xl font-bold">MyVideoShare</h1>
+      <div id="auth-section">
+        <button id="login-btn" class="bg-white text-blue-600 px-4 py-2 rounded mr-2">Login</button>
+        <button id="signup-btn" class="bg-white text-blue-600 px-4 py-2 rounded">Sign Up</button>
+      </div>
+    </div>
+  </header>
 
-    <section class="about" id="about">
-        <h2>About Sam Sage</h2>
-        <p>Christian Fortuno, better known as Sam Sage, is a dynamic Singer-Songwriter and Producer from Puerto Rico with a unique blend of Reggaeton and Trap.</p>
-        <p>Collaborations with artists like Bryant Myers and Kendo Kaponi have solidified his place in the Latin urban scene.</p>
-        <p>Currently making waves in Austin (ATX), Sam Sage is the artist to watch. Catch him live at <a href="https://schedule.sxsw.com/2025/artists/2205872" target="_blank">SXSW 2025</a>.</p>
-    </section>
-
-    <section id="music">
-        <h2>Music</h2>
-        <p style="text-align:center; font-size:1.2rem;">Stream the latest from Sam Sage</p>
-        <iframe src="https://open.spotify.com/embed/artist/3o7QHIT3xAl7YM7nd9QiTk" width="100%" height="400" frameborder="0" allowtransparency="true" allow="encrypted-media" style="border-radius:15px; margin-top:30px;"></iframe>
-
-  
-
-    <section class="newsletter">
-        <h2>Stay Updated</h2>
-        <p>Join the newsletter for exclusive drops, tour news, and more.</p>
-        <form action="https://your-mailchimp-link" method="post"> <!-- Replace with your signup URL -->
-            <input type="email" placeholder="Your Email" required aria-label="Email for newsletter">
-            <button type="submit">Subscribe</button>
-        </form>
-    </section>
-
-    <section class="request-section" id="request">
-        <h2>Need Something Custom?</h2>
-        <p style="color:var(--text-secondary); max-width:800px; margin:0 auto 40px;">Features, beats, website design, art, or crypto services — hit me up.</p>
-        <button id="requestBtn">REQUEST NOW</button>
-    </section>
-
-    <div class="modal" id="requestModal">
-        <div class="modal-content">
-            <h3>Select Service</h3>
-            <button onclick="mail('Song / Feature / Beat')">Song / Feature / Beat</button>
-            <button onclick="mail('Website Service')">Website / Design</button>
-            <button onclick="mail('Crypto Service')">Crypto / Web3</button>
-            <button onclick="mail('Other Inquiry')">Something Else</button>
-            <div class="close-modal" onclick="document.getElementById('requestModal').style.display='none'">Close</div>
-        </div>
+  <!-- Main Content -->
+  <main class="max-w-6xl mx-auto p-4">
+    <!-- Auth Forms (hidden by default) -->
+    <div id="auth-forms" class="hidden bg-white p-6 rounded shadow-md max-w-md mx-auto mb-8">
+      <h2 id="auth-title" class="text-xl font-bold mb-4">Login</h2>
+      <input type="text" id="username" placeholder="Username" class="w-full p-2 border rounded mb-4"/>
+      <input type="password" id="password" placeholder="Password" class="w-full p-2 border rounded mb-4"/>
+      <button id="auth-submit" class="bg-blue-600 text-white px-4 py-2 rounded w-full">Login</button>
+      <p class="mt-4 text-center">
+        <a href="#" id="auth-toggle" class="text-blue-600">Don't have an account? Sign Up</a>
+      </p>
     </div>
 
-    <footer>
-        <p>© 2025 URUA LABS. All Rights Reserved.</p>
-        <div class="social-links">
-            <a href="https://open.spotify.com/artist/3o7QHIT3xAl7YM7nd9QiTk" target="_blank" aria-label="Spotify">Spotify</a>
-            <a href="https://www.instagram.com/samsagewize/" target="_blank" aria-label="Instagram">Instagram</a>
-            <a href="https://www.youtube.com/@SamSageWize" target="_blank" aria-label="YouTube">YouTube</a>
-            <a href="https://kick.com/samsagewize" target="_blank" aria-label="Kick">Kick</a>
-            <a href="https://www.twitch.tv/samsagesats" target="_blank" aria-label="Twitch">Twitch</a>
-            <a href="mailto:urualabs@gmail.com" aria-label="Email">Email</a>
-        </div>
-    </footer>
+    <!-- Logged-in User Info -->
+    <div id="user-info" class="hidden bg-white p-4 rounded shadow-md mb-8 flex justify-between items-center">
+      <span>Welcome, <strong id="current-user"></strong>!</span>
+      <button id="logout-btn" class="bg-red-600 text-white px-4 py-2 rounded">Logout</button>
+    </div>
 
-    <script>
-        // Menu toggle
-        document.querySelector('.menu-toggle').addEventListener('click', () => {
-            document.querySelector('nav ul').classList.toggle('active');
-        });
+    <!-- Upload Section (visible only when logged in) -->
+    <section id="upload-section" class="hidden bg-white p-6 rounded shadow-md mb-8">
+      <h2 class="text-xl font-bold mb-4">Upload a Video</h2>
+      <input type="text" id="video-title" placeholder="Video Title" class="w-full p-2 border rounded mb-4"/>
+      <input type="file" id="video-file" accept="video/*" class="w-full p-2 border rounded mb-4"/>
+      <button id="upload-btn" class="bg-green-600 text-white px-4 py-2 rounded">Upload Video</button>
+      <p id="upload-progress" class="mt-4 text-gray-600"></p>
+    </section>
 
-        // Theme toggle
-        const themeIcon = document.querySelector('.theme-icon');
-        if (localStorage.getItem('theme') === 'light') {
-            document.body.classList.add('light-mode');
-            themeIcon.textContent = '☀';
-        }
-        document.querySelector('.theme-toggle').addEventListener('click', () => {
-            document.body.classList.toggle('light-mode');
-            if (document.body.classList.contains('light-mode')) {
-                themeIcon.textContent = '☀'; localStorage.setItem('theme', 'light');
-            } else {
-                themeIcon.textContent = '🌙'; localStorage.setItem('theme', 'dark');
-            }
-        });
+    <!-- Video Grid -->
+    <section id="video-grid" class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
+      <!-- Videos will be injected here by JavaScript -->
+    </section>
+  </main>
 
-        // Request modal
-        document.getElementById('requestBtn').addEventListener('click', () => {
-            document.getElementById('requestModal').style.display = 'flex';
-        });
+  <script>
+    // Simple in-memory "database" (resets on page refresh)
+    let users = JSON.parse(localStorage.getItem('users')) || {};
+    let videos = JSON.parse(localStorage.getItem('videos')) || [];
+    let currentUser = null;
 
-        // Email function
-        function mail(service) {
-            const subject = encodeURIComponent(`Request: ${service}`);
-            const body = encodeURIComponent(`Hello Sam,\n\nI'm interested in: ${service}\n\nDetails:\n\nThanks!`);
-            window.location.href = `mailto:urualabs@gmail.com?subject=${subject}&body=${body}`;
-            document.getElementById('requestModal').style.display = 'none';
-        }
+    // DOM Elements
+    const loginBtn = document.getElementById('login-btn');
+    const signupBtn = document.getElementById('signup-btn');
+    const authSection = document.getElementById('auth-section');
+    const authForms = document.getElementById('auth-forms');
+    const authTitle = document.getElementById('auth-title');
+    const authSubmit = document.getElementById('auth-submit');
+    const authToggle = document.getElementById('auth-toggle');
+    const usernameInput = document.getElementById('username');
+    const passwordInput = document.getElementById('password');
+    const userInfo = document.getElementById('user-info');
+    const currentUserSpan = document.getElementById('current-user');
+    const logoutBtn = document.getElementById('logout-btn');
+    const uploadSection = document.getElementById('upload-section');
+    const videoTitle = document.getElementById('video-title');
+    const videoFile = document.getElementById('video-file');
+    const uploadBtn = document.getElementById('upload-btn');
+    const uploadProgress = document.getElementById('upload-progress');
+    const videoGrid = document.getElementById('video-grid');
 
-        // Close modal on outside click
-        window.addEventListener('click', (e) => {
-            if (e.target === document.getElementById('requestModal')) {
-                document.getElementById('requestModal').style.display = 'none';
-            }
-        });
-    </script>
+    // Show auth forms
+    function showAuth(isSignup = false) {
+      authForms.classList.remove('hidden');
+      authTitle.textContent = isSignup ? 'Sign Up' : 'Login';
+      authSubmit.textContent = isSignup ? 'Sign Up' : 'Login';
+      authToggle.textContent = isSignup ? 'Already have an account? Login' : "Don't have an account? Sign Up";
+      authSubmit.onclick = isSignup ? signup : login;
+    }
+
+    // Login
+    function login() {
+      const username = usernameInput.value.trim();
+      const password = passwordInput.value;
+      if (users[username] && users[username] === password) {
+        currentUser = username;
+        updateUI();
+        authForms.classList.add('hidden');
+        usernameInput.value = '';
+        passwordInput.value = '';
+      } else {
+        alert('Invalid username or password');
+      }
+    }
+
+    // Signup
+    function signup() {
+      const username = usernameInput.value.trim();
+      const password = passwordInput.value;
+      if (!username || !password) {
+        alert('Please fill in both fields');
+        return;
+      }
+      if (users[username]) {
+        alert('Username already exists');
+        return;
+      }
+      users[username] = password;
+      localStorage.setItem('users', JSON.stringify(users));
+      alert('Account created! You can now log in.');
+      showAuth(false); // switch to login
+    }
+
+    // Logout
+    function logout() {
+      currentUser = null;
+      updateUI();
+    }
+
+    // Update UI based on login state
+    function updateUI() {
+      if (currentUser) {
+        authSection.classList.add('hidden');
+        userInfo.classList.remove('hidden');
+        uploadSection.classList.remove('hidden');
+        currentUserSpan.textContent = currentUser;
+        renderVideos();
+      } else {
+        authSection.classList.remove('hidden');
+        userInfo.classList.add('hidden');
+        uploadSection.classList.add('hidden');
+      }
+    }
+
+    // Render all videos
+    function renderVideos() {
+      videoGrid.innerHTML = '';
+      videos.forEach((video, index) => {
+        const card = document.createElement('div');
+        card.className = 'bg-white rounded shadow overflow-hidden';
+        card.innerHTML = `
+          <video controls>
+            <source src="${video.url}" type="video/mp4">
+            Your browser does not support the video tag.
+          </video>
+          <div class="p-4">
+            <h3 class="font-bold text-lg">${video.title}</h3>
+            <p class="text-gray-600">Uploaded by: ${video.user}</p>
+          </div>
+        `;
+        videoGrid.appendChild(card);
+      });
+    }
+
+    // Upload video
+    uploadBtn.onclick = () => {
+      const title = videoTitle.value.trim();
+      const file = videoFile.files[0];
+      if (!title || !file) {
+        alert('Please provide a title and select a video file');
+        return;
+      }
+
+      const reader = new FileReader();
+      reader.onload = (e) => {
+        const videoObj = {
+          title,
+          url: e.target.result, // data URL (works for demo, limited size)
+          user: currentUser
+        };
+        videos.push(videoObj);
+        localStorage.setItem('videos', JSON.stringify(videos));
+        videoTitle.value = '';
+        videoFile.value = '';
+        uploadProgress.textContent = 'Upload complete!';
+        setTimeout(() => { uploadProgress.textContent = ''; }, 3000);
+        renderVideos();
+      };
+      reader.readAsDataURL(file);
+      uploadProgress.textContent = 'Processing video... (this is a demo, using data URL)';
+    };
+
+    // Event Listeners
+    loginBtn.onclick = () => showAuth(false);
+    signupBtn.onclick = () => showAuth(true);
+    authToggle.onclick = (e) => {
+      e.preventDefault();
+      const isSignup = authTitle.textContent === 'Login';
+      showAuth(isSignup);
+    };
+    logoutBtn.onclick = logout;
+
+    // Initial render
+    updateUI();
+  </script>
 </body>
 </html>
-
