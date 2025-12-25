@@ -3,8 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>MyVideoShare - Share Your Videos</title>
-  <!-- Tailwind CSS CDN -->
+  <title>Viro - Share Your Videos</title>
   <script src="https://cdn.tailwindcss.com"></script>
   <style>
     video { max-width: 100%; height: auto; border-radius: 8px; }
@@ -14,16 +13,21 @@
 <body class="bg-gray-100 font-sans">
 
   <!-- Header -->
-  <header class="bg-blue-600 text-white p-4 shadow-md sticky top-0 z-10">
+  <header class="bg-indigo-600 text-white p-4 shadow-md sticky top-0 z-10">
     <div class="max-w-6xl mx-auto flex justify-between items-center">
-      <button id="home-btn" class="text-3xl font-bold hover:opacity-80 transition">MyVideoShare</button>
-      <div id="auth-section" class="flex items-center">
-        <button id="login-btn" class="bg-white text-blue-600 px-5 py-2 rounded-lg font-medium mr-3 hover:bg-gray-100 transition">Login</button>
-        <button id="signup-btn" class="bg-white text-blue-600 px-5 py-2 rounded-lg font-medium hover:bg-gray-100 transition">Sign Up</button>
-      </div>
-      <div id="profile-section" class="hidden flex items-center">
-        <span class="mr-4 text-lg">Welcome, <strong id="current-user" class="text-white"></strong>!</span>
-        <button id="logout-btn" class="bg-red-600 text-white px-5 py-2 rounded-lg font-medium hover:bg-red-700 transition">Logout</button>
+      <button id="home-btn" class="text-3xl font-bold hover:opacity-80 transition">Viro</button>
+      
+      <div class="flex items-center space-x-6">
+        <div id="auth-section" class="flex items-center space-x-4">
+          <button id="login-btn" class="bg-white text-indigo-600 px-5 py-2 rounded-lg font-medium hover:bg-gray-100 transition">Login</button>
+          <button id="signup-btn" class="bg-white text-indigo-600 px-5 py-2 rounded-lg font-medium hover:bg-gray-100 transition">Sign Up</button>
+        </div>
+
+        <div id="profile-section" class="hidden flex items-center space-x-6">
+          <span class="text-lg">Hello, <strong id="current-user"></strong></span>
+          <button id="profile-btn" class="bg-purple-600 hover:bg-purple-700 px-5 py-3 rounded-lg font-medium transition">My Profile</button>
+          <button id="logout-btn" class="bg-red-600 hover:bg-red-700 px-5 py-2 rounded-lg font-medium transition">Logout</button>
+        </div>
       </div>
     </div>
   </header>
@@ -31,74 +35,109 @@
   <!-- Main Content -->
   <main class="max-w-6xl mx-auto p-6">
 
-    <!-- Welcome / Home Message -->
-    <div class="text-center my-10">
-      <h2 class="text-4xl font-bold text-gray-800 mb-4">Welcome to MyVideoShare</h2>
-      <p class="text-xl text-gray-600">Discover and share amazing videos with the community</p>
-    </div>
-
-    <!-- Upload Section (Only for logged-in users) -->
-    <section id="upload-section" class="hidden bg-white p-8 rounded-xl shadow-lg mb-12">
-      <h2 class="text-2xl font-bold mb-6 text-center">Upload Your Video</h2>
-      <input type="text" id="video-title" placeholder="Enter video title..." class="w-full p-4 border border-gray-300 rounded-lg mb-6 focus:outline-none focus:ring-2 focus:ring-blue-500 text-lg"/>
-
-      <!-- Custom Upload Area -->
-      <div class="border-4 border-dashed border-blue-300 rounded-xl p-12 text-center hover:border-blue-500 transition bg-blue-50">
-        <input type="file" id="video-file" accept="video/*" class="hidden"/>
-        <label for="video-file" class="cursor-pointer block">
-          <svg class="mx-auto h-16 w-16 text-blue-500 mb-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12"/>
-          </svg>
-          <p class="text-2xl font-semibold text-gray-700">Click to upload video</p>
-          <p class="text-lg text-gray-500 mt-3">or drag and drop</p>
-          <p class="text-sm text-gray-400 mt-4">Supports MP4, WebM, MOV (smaller files recommended, max 10MB for best results)</p>
-        </label>
-        <p id="selected-file" class="mt-6 text-lg font-medium text-blue-700"></p>
+    <!-- Page: Home -->
+    <section id="home-page">
+      <div class="text-center my-10">
+        <h2 class="text-4xl font-bold text-gray-800 mb-4">Welcome to Viro</h2>
+        <p class="text-xl text-gray-600">Discover and enjoy short videos from the community</p>
       </div>
 
-      <button id="upload-btn" class="mt-8 w-full bg-green-600 hover:bg-green-700 text-white py-4 rounded-lg font-bold text-xl transition shadow-md">
-        Upload Video
-      </button>
-      <p id="upload-progress" class="mt-6 text-center text-lg font-medium text-gray-700"></p>
+      <!-- Upload Section (Only for logged-in users) -->
+      <section id="upload-section" class="hidden bg-white p-8 rounded-xl shadow-lg mb-12">
+        <h2 class="text-2xl font-bold mb-6 text-center">Upload a New Video</h2>
+        <input type="text" id="video-title" placeholder="Enter video title..." class="w-full p-4 border border-gray-300 rounded-lg mb-6 focus:outline-none focus:ring-2 focus:ring-indigo-500 text-lg"/>
+
+        <div class="border-4 border-dashed border-indigo-300 rounded-xl p-12 text-center hover:border-indigo-500 transition bg-indigo-50">
+          <input type="file" id="video-file" accept="video/*" class="hidden"/>
+          <label for="video-file" class="cursor-pointer block">
+            <svg class="mx-auto h-16 w-16 text-indigo-500 mb-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12"/>
+            </svg>
+            <p class="text-2xl font-semibold text-gray-700">Click to upload</p>
+            <p class="text-lg text-gray-500 mt-3">or drag and drop</p>
+            <p class="text-sm text-gray-400 mt-4">MP4, WebM, MOV (smaller files work best)</p>
+          </label>
+          <p id="selected-file" class="mt-6 text-lg font-medium text-indigo-700"></p>
+        </div>
+
+        <label class="flex items-center mt-6 text-lg">
+          <input type="checkbox" id="post-to-home" checked class="mr-3 h-5 w-5 text-indigo-600"/>
+          <span>Post this video to the home page (make it public)</span>
+        </label>
+
+        <button id="upload-btn" class="mt-8 w-full bg-green-600 hover:bg-green-700 text-white py-4 rounded-lg font-bold text-xl transition shadow-md">
+          Upload Video
+        </button>
+        <p id="upload-progress" class="mt-6 text-center text-lg font-medium text-gray-700"></p>
+      </section>
+
+      <!-- Public Video Gallery -->
+      <section class="mb-12">
+        <h2 class="text-3xl font-bold text-gray-800 mb-8 text-center">Trending on Viro</h2>
+        <div id="public-video-grid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8"></div>
+        <p id="no-public-videos" class="text-center text-xl text-gray-500 py-20">No public videos yet. Be the first to share one!</p>
+      </section>
     </section>
 
-    <!-- Auth Forms -->
+    <!-- Page: My Profile -->
+    <section id="profile-page" class="hidden">
+      <div class="text-center my-10">
+        <h2 class="text-4xl font-bold text-gray-800 mb-4">My Profile</h2>
+        <p class="text-xl text-gray-600">Manage all your uploaded videos</p>
+      </div>
+
+      <div id="my-video-grid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8"></div>
+      <p id="no-my-videos" class="text-center text-xl text-gray-500 py-20">You haven't uploaded any videos yet.</p>
+    </section>
+
+    <!-- Auth Modal -->
     <div id="auth-forms" class="hidden fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
       <div class="bg-white p-8 rounded-xl shadow-2xl max-w-md w-full">
         <h2 id="auth-title" class="text-3xl font-bold mb-6 text-center">Login</h2>
-        <input type="text" id="username" placeholder="Username" class="w-full p-4 border border-gray-300 rounded-lg mb-5 focus:outline-none focus:ring-2 focus:ring-blue-500"/>
-        <input type="password" id="password" placeholder="Password" class="w-full p-4 border border-gray-300 rounded-lg mb-6 focus:outline-none focus:ring-2 focus:ring-blue-500"/>
-        <button id="auth-submit" class="w-full bg-blue-600 text-white py-4 rounded-lg font-bold text-xl hover:bg-blue-700 transition">Login</button>
+        <input type="text" id="username" placeholder="Username" class="w-full p-4 border border-gray-300 rounded-lg mb-5 focus:outline-none focus:ring-2 focus:ring-indigo-500"/>
+        <input type="password" id="password" placeholder="Password" class="w-full p-4 border border-gray-300 rounded-lg mb-6 focus:outline-none focus:ring-2 focus:ring-indigo-500"/>
+        <button id="auth-submit" class="w-full bg-indigo-600 text-white py-4 rounded-lg font-bold text-xl hover:bg-indigo-700 transition">Login</button>
         <p class="mt-6 text-center text-lg">
-          <a href="#" id="auth-toggle" class="text-blue-600 font-medium hover:underline">Don't have an account? Sign Up</a>
+          <a href="#" id="auth-toggle" class="text-indigo-600 font-medium hover:underline">Don't have an account? Sign Up</a>
         </p>
         <button id="close-auth" class="mt-4 text-gray-500 hover:text-gray-700 w-full text-center">Close</button>
       </div>
     </div>
 
-    <!-- Video Gallery - Visible to Everyone -->
-    <section class="mb-12">
-      <h2 class="text-3xl font-bold text-gray-800 mb-8 text-center">Community Videos</h2>
-      <div id="video-grid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
-        <!-- Videos loaded here -->
-      </div>
-      <p id="no-videos" class="text-center text-xl text-gray-500 py-20 hidden">No videos uploaded yet. Be the first to share one!</p>
-    </section>
-
   </main>
 
   <script>
-    // Local storage database
-    let users = JSON.parse(localStorage.getItem('users')) || {};
-    let videos = JSON.parse(localStorage.getItem('videos')) || [];
+    // Data stored in localStorage
+    let users = JSON.parse(localStorage.getItem('viro_users')) || {};
+    let videos = JSON.parse(localStorage.getItem('viro_videos')) || [];
     let currentUser = null;
 
     // DOM Elements
     const homeBtn = document.getElementById('home-btn');
     const loginBtn = document.getElementById('login-btn');
     const signupBtn = document.getElementById('signup-btn');
+    const profileBtn = document.getElementById('profile-btn');
     const authSection = document.getElementById('auth-section');
     const profileSection = document.getElementById('profile-section');
+    const currentUserSpan = document.getElementById('current-user');
+    const logoutBtn = document.getElementById('logout-btn');
+
+    const homePage = document.getElementById('home-page');
+    const profilePage = document.getElementById('profile-page');
+
+    const uploadSection = document.getElementById('upload-section');
+    const videoTitle = document.getElementById('video-title');
+    const videoFile = document.getElementById('video-file');
+    const postToHomeCheckbox = document.getElementById('post-to-home');
+    const uploadBtn = document.getElementById('upload-btn');
+    const uploadProgress = document.getElementById('upload-progress');
+    const selectedFileDisplay = document.getElementById('selected-file');
+
+    const publicVideoGrid = document.getElementById('public-video-grid');
+    const noPublicVideos = document.getElementById('no-public-videos');
+    const myVideoGrid = document.getElementById('my-video-grid');
+    const noMyVideos = document.getElementById('no-my-videos');
+
     const authForms = document.getElementById('auth-forms');
     const authTitle = document.getElementById('auth-title');
     const authSubmit = document.getElementById('auth-submit');
@@ -106,31 +145,40 @@
     const closeAuth = document.getElementById('close-auth');
     const usernameInput = document.getElementById('username');
     const passwordInput = document.getElementById('password');
-    const currentUserSpan = document.getElementById('current-user');
-    const logoutBtn = document.getElementById('logout-btn');
-    const uploadSection = document.getElementById('upload-section');
-    const videoTitle = document.getElementById('video-title');
-    const videoFile = document.getElementById('video-file');
-    const uploadBtn = document.getElementById('upload-btn');
-    const uploadProgress = document.getElementById('upload-progress');
-    const selectedFileDisplay = document.getElementById('selected-file');
-    const videoGrid = document.getElementById('video-grid');
-    const noVideosMsg = document.getElementById('no-videos');
 
-    // Show selected filename
+    // Navigation
+    function showHome() {
+      homePage.classList.remove('hidden');
+      profilePage.classList.add('hidden');
+      document.title = "Viro - Home";
+      renderPublicVideos();
+    }
+
+    function showProfile() {
+      if (!currentUser) {
+        alert("Please log in to view your profile");
+        return;
+      }
+      homePage.classList.add('hidden');
+      profilePage.classList.remove('hidden');
+      document.title = "My Profile - Viro";
+      renderMyVideos();
+    }
+
+    homeBtn.onclick = showHome;
+    profileBtn.onclick = showProfile;
+
+    // File selection display
     videoFile.addEventListener('change', () => {
       if (videoFile.files.length > 0) {
         const file = videoFile.files[0];
-        if (file.size > 10 * 1024 * 1024) { // 10MB limit warning
-          alert('File is larger than 10MB. For best results, use smaller videos.');
-        }
         selectedFileDisplay.textContent = `Selected: ${file.name}`;
       } else {
         selectedFileDisplay.textContent = '';
       }
     });
 
-    // Show auth modal
+    // Auth functions
     function showAuth(isSignup = false) {
       authForms.classList.remove('hidden');
       authTitle.textContent = isSignup ? 'Sign Up' : 'Login';
@@ -139,7 +187,6 @@
       authSubmit.onclick = isSignup ? signup : login;
     }
 
-    // Login
     function login() {
       const username = usernameInput.value.trim();
       const password = passwordInput.value;
@@ -153,7 +200,6 @@
       }
     }
 
-    // Signup
     function signup() {
       const username = usernameInput.value.trim();
       const password = passwordInput.value;
@@ -166,8 +212,8 @@
         return;
       }
       users[username] = password;
-      localStorage.setItem('users', JSON.stringify(users));
-      alert('Account created successfully! Please log in.');
+      localStorage.setItem('viro_users', JSON.stringify(users));
+      alert('Account created! Please log in.');
       showAuth(false);
     }
 
@@ -176,13 +222,13 @@
       passwordInput.value = '';
     }
 
-    // Logout
     function logout() {
       currentUser = null;
       updateUI();
+      showHome();
     }
 
-    // Update UI
+    // UI Update
     function updateUI() {
       if (currentUser) {
         authSection.classList.add('hidden');
@@ -194,103 +240,86 @@
         profileSection.classList.add('hidden');
         uploadSection.classList.add('hidden');
       }
-      renderVideos();
+      renderPublicVideos();
     }
 
-    // Render videos (visible to all)
-    function renderVideos() {
-      videoGrid.innerHTML = '';
-      if (videos.length === 0) {
-        noVideosMsg.classList.remove('hidden');
+    // Render public videos (only those marked as posted)
+    function renderPublicVideos() {
+      publicVideoGrid.innerHTML = '';
+      const publicVideos = videos.filter(v => v.posted === true);
+      if (publicVideos.length === 0) {
+        noPublicVideos.classList.remove('hidden');
       } else {
-        noVideosMsg.classList.add('hidden');
+        noPublicVideos.classList.add('hidden');
       }
 
-      videos.forEach((video, index) => {
-        const card = document.createElement('div');
-        card.className = 'bg-white rounded-xl shadow-lg overflow-hidden hover:shadow-2xl transition';
-        const isLiked = video.likes.includes(currentUser);
-        const likeIcon = isLiked ? '❤️' : '♡';
-        const commentsHtml = video.comments.map(c => `<p class="text-gray-700"><strong>${c.user}:</strong> ${c.text}</p>`).join('');
-        const commentForm = currentUser ? `
-          <div class="mt-4">
-            <input type="text" placeholder="Add a comment..." class="w-full p-2 border rounded mb-2 comment-input" data-index="${index}"/>
-            <button class="bg-blue-600 text-white px-4 py-2 rounded comment-btn" data-index="${index}">Comment</button>
-          </div>
-        ` : '';
-
-        card.innerHTML = `
-          <video controls poster="" class="w-full h-64 object-cover">
-            <source src="${video.url}" type="video/mp4">
-            Your browser does not support video playback.
-          </video>
-          <div class="p-6">
-            <h3 class="font-bold text-xl mb-2">${video.title}</h3>
-            <p class="text-gray-600 mb-4">Uploaded by <span class="font-medium">${video.user}</span></p>
-            <div class="flex items-center mb-4">
-              <button class="like-btn mr-2 text-2xl ${isLiked ? 'text-red-500' : 'text-gray-500'}" data-index="${index}">${likeIcon}</button>
-              <span>${video.likes.length} likes</span>
-            </div>
-            <div class="comments-section">
-              ${commentsHtml}
-              ${commentForm}
-            </div>
-          </div>
-        `;
-        videoGrid.appendChild(card);
-      });
-
-      // Add event listeners for likes and comments after rendering
-      document.querySelectorAll('.like-btn').forEach(btn => {
-        btn.addEventListener('click', handleLike);
-      });
-      document.querySelectorAll('.comment-btn').forEach(btn => {
-        btn.addEventListener('click', handleComment);
+      publicVideos.forEach((video) => {
+        const card = createVideoCard(video, false); // false = not in profile (no controls)
+        publicVideoGrid.appendChild(card);
       });
     }
 
-    // Handle like
-    function handleLike(e) {
-      if (!currentUser) {
-        alert('Please log in to like videos');
-        return;
-      }
-      const index = e.target.dataset.index;
-      const video = videos[index];
-      const userIndex = video.likes.indexOf(currentUser);
-      if (userIndex === -1) {
-        video.likes.push(currentUser);
+    // Render user's own videos with management controls
+    function renderMyVideos() {
+      myVideoGrid.innerHTML = '';
+      const myVideos = videos.filter(v => v.user === currentUser);
+      if (myVideos.length === 0) {
+        noMyVideos.classList.remove('hidden');
       } else {
-        video.likes.splice(userIndex, 1);
+        noMyVideos.classList.add('hidden');
       }
-      localStorage.setItem('videos', JSON.stringify(videos));
-      renderVideos();
+
+      myVideos.forEach((video, index) => {
+        const card = createVideoCard(video, true, index);
+        myVideoGrid.appendChild(card);
+      });
     }
 
-    // Handle comment
-    function handleComment(e) {
-      const index = e.target.dataset.index;
-      const input = document.querySelector(`.comment-input[data-index="${index}"]`);
-      const text = input.value.trim();
-      if (!text) return;
-      videos[index].comments.push({ user: currentUser, text });
-      localStorage.setItem('videos', JSON.stringify(videos));
-      input.value = '';
-      renderVideos();
+    // Create video card (shared logic)
+    function createVideoCard(video, isProfileView, videoIndex) {
+      const card = document.createElement('div');
+      card.className = 'bg-white rounded-xl shadow-lg overflow-hidden hover:shadow-2xl transition';
+
+      const postedStatus = video.posted ? 'Public' : 'Private';
+      const postedColor = video.posted ? 'text-green-600' : 'text-gray-500';
+
+      const managementControls = isProfileView ? `
+        <div class="p-4 bg-gray-50 flex justify-between items-center">
+          <span class="font-medium ${postedColor}">${postedStatus}</span>
+          <div>
+            <button class="toggle-post-btn mr-3 px-4 py-2 rounded bg-blue-600 text-white hover:bg-blue-700" data-index="${videoIndex}">
+              ${video.posted ? 'Make Private' : 'Post to Home'}
+            </button>
+            <button class="delete-btn px-4 py-2 rounded bg-red-600 text-white hover:bg-red-700" data-index="${videoIndex}">
+              Delete
+            </button>
+          </div>
+        </div>
+      ` : '';
+
+      card.innerHTML = `
+        <video controls class="w-full h-64 object-cover">
+          <source src="${video.url}" type="video/mp4">
+          Your browser does not support video playback.
+        </video>
+        <div class="p-6">
+          <h3 class="font-bold text-xl mb-2">${video.title}</h3>
+          <p class="text-gray-600">by <span class="font-medium">${video.user}</span></p>
+        </div>
+        ${managementControls}
+      `;
+
+      return card;
     }
 
     // Upload video
     uploadBtn.onclick = () => {
       const title = videoTitle.value.trim();
       const file = videoFile.files[0];
+      const posted = postToHomeCheckbox.checked;
 
       if (!title || !file) {
         alert('Please add a title and select a video file');
-        return;
-      }
-
-      if (file.size > 50 * 1024 * 1024) { // Arbitrary 50MB limit to prevent issues
-        alert('File too large. Please use videos under 50MB.');
         return;
       }
 
@@ -303,29 +332,28 @@
           title,
           url: e.target.result,
           user: currentUser,
-          likes: [],
-          comments: []
+          posted: posted
         };
         videos.push(videoObj);
-        localStorage.setItem('videos', JSON.stringify(videos));
+        localStorage.setItem('viro_videos', JSON.stringify(videos));
 
         // Reset form
         videoTitle.value = '';
         videoFile.value = '';
         selectedFileDisplay.textContent = '';
+        postToHomeCheckbox.checked = true;
 
         uploadProgress.textContent = 'Upload complete! 🎉';
         uploadBtn.disabled = false;
 
-        setTimeout(() => {
-          uploadProgress.textContent = '';
-        }, 4000);
+        setTimeout(() => { uploadProgress.textContent = ''; }, 4000);
 
-        renderVideos();
+        renderPublicVideos();
+        if (!profilePage.classList.contains('hidden')) renderMyVideos();
       };
 
       reader.onerror = () => {
-        alert('Error reading file. Try again or use a smaller video.');
+        alert('Error reading file. Try a smaller video.');
         uploadProgress.textContent = '';
         uploadBtn.disabled = false;
       };
@@ -333,8 +361,28 @@
       reader.readAsDataURL(file);
     };
 
+    // Event delegation for dynamic buttons (toggle post & delete)
+    document.addEventListener('click', (e) => {
+      if (e.target.classList.contains('toggle-post-btn')) {
+        const index = parseInt(e.target.dataset.index);
+        videos[index].posted = !videos[index].posted;
+        localStorage.setItem('viro_videos', JSON.stringify(videos));
+        renderPublicVideos();
+        renderMyVideos();
+      }
+
+      if (e.target.classList.contains('delete-btn')) {
+        if (confirm('Are you sure you want to delete this video? This cannot be undone.')) {
+          const index = parseInt(e.target.dataset.index);
+          videos.splice(index, 1);
+          localStorage.setItem('viro_videos', JSON.stringify(videos));
+          renderPublicVideos();
+          renderMyVideos();
+        }
+      }
+    });
+
     // Event Listeners
-    homeBtn.onclick = () => window.scrollTo({ top: 0, behavior: 'smooth' });
     loginBtn.onclick = () => showAuth(false);
     signupBtn.onclick = () => showAuth(true);
     authToggle.onclick = (e) => {
@@ -345,13 +393,14 @@
     closeAuth.onclick = () => authForms.classList.add('hidden');
     logoutBtn.onclick = logout;
 
-    // Close modal when clicking outside
+    // Close modal on outside click
     authForms.onclick = (e) => {
       if (e.target === authForms) authForms.classList.add('hidden');
     };
 
     // Initial load
     updateUI();
+    showHome();
   </script>
 </body>
 </html>
