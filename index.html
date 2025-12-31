@@ -1,408 +1,229 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Viro - Share Your Videos</title>
-  <script src="https://cdn.tailwindcss.com"></script>
-  <style>
-    video { max-width: 100%; height: auto; border-radius: 8px; }
-    .hidden { display: none; }
-  </style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sam Sage | Official Website</title>
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --background-color: #0a0a0a;
+            --text-color: #ffffff;
+            --text-secondary: #cccccc;
+            --accent-color: #bb33ff;
+            --header-bg: rgba(0, 0, 0, 0.8);
+            --section-overlay: rgba(0, 0, 0, 0.6);
+            --footer-border: #333;
+            --dropdown-bg: rgba(0, 0, 0, 0.9);
+            --cta-border: #bb33ff;
+            --gallery-overlay: rgba(187, 51, 255, 0.3);
+        }
+
+        body.light-mode {
+            --background-color: #f5f5f5;
+            --text-color: #333333;
+            --text-secondary: #666666;
+            --accent-color: #8a2be2;
+            --header-bg: rgba(255, 255, 255, 0.9);
+            --section-overlay: rgba(255, 255, 255, 0.5);
+            --footer-border: #cccccc;
+            --dropdown-bg: rgba(255, 255, 255, 0.9);
+            --cta-border: #8a2be2;
+            --gallery-overlay: rgba(138, 43, 226, 0.3);
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Orbitron', sans-serif; }
+        body { background: var(--background-color); color: var(--text-color); overflow-x: hidden; }
+
+        header { position: fixed; top: 0; width: 100%; background: var(--header-bg); backdrop-filter: blur(10px); z-index: 1000; padding: 20px 0; }
+        nav { display: flex; justify-content: space-between; align-items: center; max-width: 1200px; margin: 0 auto; padding: 0 20px; }
+        nav .logo img { max-height: 50px; filter: drop-shadow(0 0 5px var(--accent-color)); transition: filter 0.3s; }
+        nav .logo img:hover { filter: drop-shadow(0 0 10px var(--accent-color)); }
+        nav ul { display: flex; list-style: none; align-items: center; justify-content: center; flex-grow: 1; }
+        nav ul li { margin: 0 15px; }
+        nav ul li a { color: var(--text-color); text-decoration: none; font-size: 1rem; transition: color 0.3s; }
+        nav ul li a:hover { color: var(--accent-color); }
+        .menu-toggle { display: none; color: var(--accent-color); font-size: 1.5rem; cursor: pointer; }
+        .theme-toggle { background: none; border: none; color: var(--accent-color); font-size: 1.5rem; cursor: pointer; }
+
+        .hero { height: 100vh; display: flex; flex-direction: column; justify-content: center; align-items: center; text-align: center;
+                background: url('image4 (2).jpeg') center/cover no-repeat; position: relative; }
+        .hero::before { content: ''; position: absolute; inset: 0; background: var(--section-overlay); }
+        .hero-content { position: relative; z-index: 2; }
+        .hero h1 { font-size: 4rem; text-transform: uppercase; letter-spacing: 5px; animation: neon-glow 2s ease-in-out infinite alternate; }
+        @keyframes neon-glow {
+            from { text-shadow: 0 0 10px var(--accent-color), 0 0 20px var(--accent-color); }
+            to { text-shadow: 0 0 20px var(--accent-color), 0 0 40px var(--accent-color); }
+        }
+        .cta-button { padding: 15px 30px; background: transparent; border: 2px solid var(--cta-border); color: var(--accent-color);
+                      text-transform: uppercase; text-decoration: none; display: inline-block; transition: all 0.3s; }
+        .cta-button:hover { background: var(--accent-color); color: var(--background-color); }
+
+        section { padding: 80px 20px; max-width: 1200px; margin: 0 auto; }
+        h2 { font-size: 2.5rem; margin-bottom: 30px; color: var(--accent-color); text-align: center; }
+
+        /* Request Section (replaces wallet) */
+        .request-section {
+            text-align: center;
+            padding: 100px 20px;
+        }
+        #requestBtn {
+            background: linear-gradient(45deg, var(--accent-color), #8a2be2);
+            color: #000;
+            border: none;
+            padding: 18px 40px;
+            font-size: 1.3em;
+            font-weight: bold;
+            border-radius: 50px;
+            cursor: pointer;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.3);
+            transition: all 0.3s;
+        }
+        #requestBtn:hover { transform: translateY(-4px); box-shadow: 0 8px 30px rgba(0,0,0,0.4); }
+
+        /* Modal */
+        .modal {
+            display: none;
+            position: fixed; inset: 0; background: rgba(0,0,0,0.8); z-index: 2000;
+            align-items: center; justify-content: center;
+        }
+        .modal-content {
+            background: var(--background-color);
+            padding: 40px; border-radius: 20px; text-align: center;
+            border: 2px solid var(--accent-color); max-width: 90%;
+        }
+        .modal h3 { color: var(--accent-color); margin-bottom: 30px; font-size: 1.8em; }
+        .modal button {
+            display: block; width: 100%; margin: 15px 0;
+            padding: 15px; background: transparent; border: 2px solid var(--accent-color);
+            color: var(--text-color); font-size: 1.1em; border-radius: 10px;
+            cursor: pointer; transition: all 0.3s;
+        }
+        .modal button:hover {
+            background: var(--accent-color); color: var(--background-color);
+        }
+        .close-modal { margin-top: 20px; color: var(--text-secondary); cursor: pointer; }
+
+        footer { background: var(--background-color); padding: 40px 20px; text-align: center; border-top: 1px solid var(--footer-border); }
+        footer .social-links a { color: var(--accent-color); margin: 0 15px; text-decoration: none; font-size: 1.2rem; }
+
+        @media (max-width: 768px) {
+            .hero h1 { font-size: 2.5rem; }
+            nav ul { display: none; flex-direction: column; position: absolute; top: 70px; left: 0; width: 100%; background: var(--dropdown-bg); padding: 20px; }
+            nav ul.active { display: flex; }
+            .menu-toggle { display: block; }
+        }
+    </style>
 </head>
-<body class="bg-gray-100 font-sans">
+<body>
 
-  <!-- Header -->
-  <header class="bg-indigo-600 text-white p-4 shadow-md sticky top-0 z-10">
-    <div class="max-w-6xl mx-auto flex justify-between items-center">
-      <button id="home-btn" class="text-3xl font-bold hover:opacity-80 transition">Viro</button>
-      
-      <div class="flex items-center space-x-6">
-        <div id="auth-section" class="flex items-center space-x-4">
-          <button id="login-btn" class="bg-white text-indigo-600 px-5 py-2 rounded-lg font-medium hover:bg-gray-100 transition">Login</button>
-          <button id="signup-btn" class="bg-white text-indigo-600 px-5 py-2 rounded-lg font-medium hover:bg-gray-100 transition">Sign Up</button>
+    <header>
+        <nav>
+            <div class="logo"><a href="#home"><img src="IMG_1414.jpg" alt="Sam Sage Logo"></a></div>
+            <ul>
+                <li><a href="#music">Music</a></li>
+                <li><a href="https://kick.com/samsagewize" target="_blank">Kick</a></li>
+                <li><a href="https://uru.printify.me" target="_blank">Store</a></li>
+                <li><a href="https://www.instagram.com/samsagewize/?hl=en" target="_blank">Dm FOR FEAT/ BEATS</a></li>
+                <li><a href="https://www.youtube.com/@samsagesats" target="_blank">WEB 3 YOUTUBE</a></li>
+            </ul>
+            <div class="menu-toggle">☰</div>
+            <button class="theme-toggle" aria-label="Toggle theme"><span class="theme-icon">🌙</span></button>
+        </nav>
+    </header>
+
+    <section class="hero" id="home">
+        <div class="hero-content">
+            <h1>Sam Sage</h1>
+            <p>URU 2 OUT NOW</p>
+            <a href="https://music.apple.com/us/artist/sam-sage/1022465537" target="_blank" class="cta-button">APPLE MUSIC</a>
         </div>
-
-        <div id="profile-section" class="hidden flex items-center space-x-6">
-          <span class="text-lg">Hello, <strong id="current-user"></strong></span>
-          <button id="profile-btn" class="bg-purple-600 hover:bg-purple-700 px-5 py-3 rounded-lg font-medium transition">My Profile</button>
-          <button id="logout-btn" class="bg-red-600 hover:bg-red-700 px-5 py-2 rounded-lg font-medium transition">Logout</button>
-        </div>
-      </div>
-    </div>
-  </header>
-
-  <!-- Main Content -->
-  <main class="max-w-6xl mx-auto p-6">
-
-    <!-- Page: Home -->
-    <section id="home-page">
-      <div class="text-center my-10">
-        <h2 class="text-4xl font-bold text-gray-800 mb-4">Welcome to Viro</h2>
-        <p class="text-xl text-gray-600">Discover and enjoy short videos from the community</p>
-      </div>
-
-      <!-- Guest Encouragement Message (visible only to non-logged-in users) -->
-      <div id="guest-message" class="text-center my-12">
-        <p class="text-2xl text-gray-700 mb-6">Watch amazing videos from the community</p>
-        <p class="text-xl text-gray-600 mb-8">Want to upload your own? It's free and fast!</p>
-        <button id="guest-signup-btn" class="bg-indigo-600 hover:bg-indigo-700 text-white px-8 py-4 rounded-xl font-bold text-xl transition shadow-lg">
-          Sign Up Now
-        </button>
-      </div>
-
-      <!-- Upload Section (Only for logged-in users) -->
-      <section id="upload-section" class="hidden bg-white p-8 rounded-xl shadow-lg mb-12">
-        <h2 class="text-2xl font-bold mb-6 text-center">Upload a New Video</h2>
-        <input type="text" id="video-title" placeholder="Enter video title..." class="w-full p-4 border border-gray-300 rounded-lg mb-6 focus:outline-none focus:ring-2 focus:ring-indigo-500 text-lg"/>
-
-        <div class="border-4 border-dashed border-indigo-300 rounded-xl p-12 text-center hover:border-indigo-500 transition bg-indigo-50">
-          <input type="file" id="video-file" accept="video/*" class="hidden"/>
-          <label for="video-file" class="cursor-pointer block">
-            <svg class="mx-auto h-16 w-16 text-indigo-500 mb-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12"/>
-            </svg>
-            <p class="text-2xl font-semibold text-gray-700">Click to upload</p>
-            <p class="text-lg text-gray-500 mt-3">or drag and drop</p>
-            <p class="text-sm text-gray-400 mt-4">MP4, WebM, MOV (smaller files work best)</p>
-          </label>
-          <p id="selected-file" class="mt-6 text-lg font-medium text-indigo-700"></p>
-        </div>
-
-        <label class="flex items-center mt-6 text-lg">
-          <input type="checkbox" id="post-to-home" checked class="mr-3 h-5 w-5 text-indigo-600"/>
-          <span>Post this video to the home page (make it public)</span>
-        </label>
-
-        <button id="upload-btn" class="mt-8 w-full bg-green-600 hover:bg-green-700 text-white py-4 rounded-lg font-bold text-xl transition shadow-md">
-          Upload Video
-        </button>
-        <p id="upload-progress" class="mt-6 text-center text-lg font-medium text-gray-700"></p>
-      </section>
-
-      <!-- Public Video Gallery -->
-      <section class="mb-12">
-        <h2 class="text-3xl font-bold text-gray-800 mb-8 text-center">Trending on Viro</h2>
-        <div id="public-video-grid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8"></div>
-        <p id="no-public-videos" class="text-center text-xl text-gray-500 py-20">No public videos yet. Be the first to share one!</p>
-      </section>
     </section>
 
-    <!-- Page: My Profile -->
-    <section id="profile-page" class="hidden">
-      <div class="text-center my-10">
-        <h2 class="text-4xl font-bold text-gray-800 mb-4">My Profile</h2>
-        <p class="text-xl text-gray-600">Manage all your uploaded videos</p>
-      </div>
-
-      <div id="my-video-grid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8"></div>
-      <p id="no-my-videos" class="text-center text-xl text-gray-500 py-20">You haven't uploaded any videos yet.</p>
+    <section class="about" id="about">
+        <h2>About Sam Sage</h2>
+        <p>Christian Fortuno, better known as Sam Sage, is a dynamic Singer-Songwriter and Producer from Puerto Rico...</p>
+        <!-- (rest of your about text unchanged) -->
+        <p>Currently making waves on the Latin music scene in Austin (ATX), Sam Sage is the artist to watch as he continues to gain momentum. Check out his upcoming performance at <a href="https://schedule.sxsw.com/2025/artists/2205872" target="_blank">SXSW 2025</a>.</p>
     </section>
 
-    <!-- Auth Modal -->
-    <div id="auth-forms" class="hidden fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
-      <div class="bg-white p-8 rounded-xl shadow-2xl max-w-md w-full">
-        <h2 id="auth-title" class="text-3xl font-bold mb-6 text-center">Login</h2>
-        <input type="email" id="email" placeholder="Email" class="w-full p-4 border border-gray-300 rounded-lg mb-5 focus:outline-none focus:ring-2 focus:ring-indigo-500"/>
-        <input type="password" id="password" placeholder="Password" class="w-full p-4 border border-gray-300 rounded-lg mb-6 focus:outline-none focus:ring-2 focus:ring-indigo-500"/>
-        <button id="auth-submit" class="w-full bg-indigo-600 text-white py-4 rounded-lg font-bold text-xl hover:bg-indigo-700 transition">Login</button>
-        <p class="mt-6 text-center text-lg">
-          <a href="#" id="auth-toggle" class="text-indigo-600 font-medium hover:underline">Don't have an account? Sign Up</a>
-        </p>
-        <button id="close-auth" class="mt-4 text-gray-500 hover:text-gray-700 w-full text-center">Close</button>
-      </div>
+    <section class="music" id="music">
+        <h2>Music</h2>
+        <p>Dive into the sound of Sam Sage on Spotify.</p>
+        <div class="music-container">
+            <iframe src="https://open.spotify.com/embed/artist/3o7QHIT3xAl7YM7nd9QiTk" width="100%" height="400" frameborder="0" allowtransparency="true" allow="encrypted-media"></iframe>
+        </div>
+    </section>
+
+    <!-- NEW REQUEST SECTION -->
+    <section class="request-section" id="request">
+        <h2>Need Something?</h2>
+        <p style="color:var(--text-secondary); margin-bottom:40px;">Features, beats, website work, or crypto services — just ask.</p>
+        <button id="requestBtn">REQUEST</button>
+    </section>
+
+    <!-- Modal -->
+    <div class="modal" id="requestModal">
+        <div class="modal-content">
+            <h3>What do you need?</h3>
+            <button onclick="mail('Song / Feature / Beat')">Song / Feature / Beat</button>
+            <button onclick="mail('Website Service')">Website Service</button>
+            <button onclick="mail('Crypto Service')">Crypto Service</button>
+            <div class="close-modal" onclick="document.getElementById('requestModal').style.display='none'">Close</div>
+        </div>
     </div>
 
-  </main>
-
-  <script type="module">
-    // Firebase Imports (Modular SDK v10+)
-    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
-    import { getAuth, onAuthStateChanged, signInWithEmailAndPassword, createUserWithEmailAndPassword, signOut } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js";
-    import { getFirestore, collection, addDoc, deleteDoc, doc, updateDoc, query, where, onSnapshot, serverTimestamp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
-    import { getStorage, ref, uploadBytesResumable, getDownloadURL, deleteObject } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-storage.js";
-
-    // Your Real Firebase Config
-    const firebaseConfig = {
-      apiKey: "AIzaSyANmYfZHO-kQDixZD7ksHccb1nxlD-UunA",
-      authDomain: "viro-8e580.firebaseapp.com",
-      projectId: "viro-8e580",
-      storageBucket: "viro-8e580.firebasestorage.app",
-      messagingSenderId: "894540520936",
-      appId: "1:894540520936:web:38dee4c995daff97cfd85d",
-      measurementId: "G-K7GQKJH5KS"
-    };
-
-    // Initialize Firebase
-    const app = initializeApp(firebaseConfig);
-    const auth = getAuth(app);
-    const db = getFirestore(app);
-    const storage = getStorage(app);
-
-    // DOM Elements
-    const homeBtn = document.getElementById('home-btn');
-    const loginBtn = document.getElementById('login-btn');
-    const signupBtn = document.getElementById('signup-btn');
-    const profileBtn = document.getElementById('profile-btn');
-    const authSection = document.getElementById('auth-section');
-    const profileSection = document.getElementById('profile-section');
-    const currentUserSpan = document.getElementById('current-user');
-    const logoutBtn = document.getElementById('logout-btn');
-
-    const homePage = document.getElementById('home-page');
-    const profilePage = document.getElementById('profile-page');
-
-    const uploadSection = document.getElementById('upload-section');
-    const videoTitle = document.getElementById('video-title');
-    const videoFile = document.getElementById('video-file');
-    const postToHomeCheckbox = document.getElementById('post-to-home');
-    const uploadBtn = document.getElementById('upload-btn');
-    const uploadProgress = document.getElementById('upload-progress');
-    const selectedFileDisplay = document.getElementById('selected-file');
-
-    const publicVideoGrid = document.getElementById('public-video-grid');
-    const noPublicVideos = document.getElementById('no-public-videos');
-    const myVideoGrid = document.getElementById('my-video-grid');
-    const noMyVideos = document.getElementById('no-my-videos');
-
-    const authForms = document.getElementById('auth-forms');
-    const authTitle = document.getElementById('auth-title');
-    const authSubmit = document.getElementById('auth-submit');
-    const authToggle = document.getElementById('auth-toggle');
-    const closeAuth = document.getElementById('close-auth');
-    const emailInput = document.getElementById('email');
-    const passwordInput = document.getElementById('password');
-
-    const guestMessage = document.getElementById('guest-message');
-    const guestSignupBtn = document.getElementById('guest-signup-btn');
-
-    let currentUser = null;
-
-    // Auth state observer
-    onAuthStateChanged(auth, (user) => {
-      currentUser = user;
-      updateUI();
-    });
-
-    // Navigation
-    function showHome() {
-      homePage.classList.remove('hidden');
-      profilePage.classList.add('hidden');
-      renderPublicVideos();
-    }
-
-    function showProfile() {
-      if (!currentUser) {
-        alert("Please sign up or log in to view your profile");
-        showAuth(false);
-        return;
-      }
-      homePage.classList.add('hidden');
-      profilePage.classList.remove('hidden');
-      renderMyVideos();
-    }
-
-    homeBtn.onclick = showHome;
-    profileBtn.onclick = showProfile;
-
-    // File selection display
-    videoFile.addEventListener('change', () => {
-      selectedFileDisplay.textContent = videoFile.files[0] ? `Selected: ${videoFile.files[0].name}` : '';
-    });
-
-    // Auth modal
-    function showAuth(isSignup = false) {
-      authForms.classList.remove('hidden');
-      authTitle.textContent = isSignup ? 'Sign Up' : 'Login';
-      authSubmit.textContent = isSignup ? 'Create Account' : 'Login';
-      authSubmit.onclick = isSignup ? signup : login;
-    }
-
-    async function login() {
-      try {
-        await signInWithEmailAndPassword(auth, emailInput.value.trim(), passwordInput.value);
-        authForms.classList.add('hidden');
-        emailInput.value = passwordInput.value = '';
-      } catch (e) {
-        alert("Login failed: " + e.message);
-      }
-    }
-
-    async function signup() {
-      try {
-        await createUserWithEmailAndPassword(auth, emailInput.value.trim(), passwordInput.value);
-        authForms.classList.add('hidden');
-        emailInput.value = passwordInput.value = '';
-      } catch (e) {
-        alert("Sign up failed: " + e.message);
-      }
-    }
-
-    logoutBtn.onclick = () => signOut(auth);
-
-    // UI Update – controls visibility for guests vs logged-in users
-    function updateUI() {
-      if (currentUser) {
-        authSection.classList.add('hidden');
-        profileSection.classList.remove('hidden');
-        uploadSection.classList.remove('hidden');
-        currentUserSpan.textContent = currentUser.email.split('@')[0];
-        guestMessage.classList.add('hidden');
-      } else {
-        authSection.classList.remove('hidden');
-        profileSection.classList.add('hidden');
-        uploadSection.classList.add('hidden');
-        guestMessage.classList.remove('hidden');
-      }
-      renderPublicVideos(); // Public videos always visible to everyone
-    }
-
-    // Guest Sign Up button
-    if (guestSignupBtn) {
-      guestSignupBtn.onclick = () => showAuth(true);
-    }
-
-    // Create video card (shared for public and profile)
-    function createVideoCard(video, videoId, isMyVideo) {
-      const card = document.createElement('div');
-      card.className = 'bg-white rounded-xl shadow-lg overflow-hidden hover:shadow-2xl transition';
-
-      const controls = isMyVideo ? `
-        <div class="p-4 bg-gray-50 flex justify-between items-center">
-          <span class="font-medium ${video.posted ? 'text-green-600' : 'text-gray-500'}">
-            ${video.posted ? 'Public' : 'Private'}
-          </span>
-          <div>
-            <button class="toggle-btn mr-3 px-4 py-2 rounded ${video.posted ? 'bg-orange-600' : 'bg-blue-600'} text-white hover:opacity-90">
-              ${video.posted ? 'Make Private' : 'Post to Home'}
-            </button>
-            <button class="delete-btn px-4 py-2 rounded bg-red-600 text-white hover:bg-red-700">Delete</button>
-          </div>
+    <footer>
+        <p>© 2025 URUA LABS. All Rights Reserved.</p>
+        <div class="social-links">
+            <a href="https://open.spotify.com/artist/3o7QHIT3xAl7YM7nd9QiTk" target="_blank">Spotify</a>
+            <a href="https://www.instagram.com/samsagewize/" target="_blank">Instagram</a>
+            <a href="https://www.youtube.com/@SamSageWize" target="_blank">YouTube</a>
+            <a href="https://www.twitch.tv/samsagesats" target="_blank">Twitch</a>
+            <a href="mailto:support@samsage.com">Contact Support</a>
         </div>
-      ` : '';
+    </footer>
 
-      card.innerHTML = `
-        <video controls class="w-full h-64 object-cover">
-          <source src="${video.url}" type="video/mp4">
-          Your browser does not support the video tag.
-        </video>
-        <div class="p-6">
-          <h3 class="font-bold text-xl mb-2">${video.title}</h3>
-          <p class="text-gray-600">by <span class="font-medium">${video.userEmail.split('@')[0]}</span></p>
-        </div>
-        ${controls}
-      `;
-
-      if (isMyVideo) {
-        card.querySelector('.toggle-btn').addEventListener('click', async () => {
-          await updateDoc(doc(db, 'videos', videoId), { posted: !video.posted });
+    <script>
+        // Menu toggle
+        document.querySelector('.menu-toggle').addEventListener('click', () => {
+            document.querySelector('nav ul').classList.toggle('active');
         });
-        card.querySelector('.delete-btn').addEventListener('click', async () => {
-          if (confirm('Permanently delete this video? This cannot be undone.')) {
-            await deleteObject(ref(storage, video.storagePath));
-            await deleteDoc(doc(db, 'videos', videoId));
-          }
-        });
-      }
-      return card;
-    }
 
-    // Real-time public videos (visible to everyone)
-    function renderPublicVideos() {
-      const q = query(collection(db, 'videos'), where('posted', '==', true));
-      onSnapshot(q, (snapshot) => {
-        publicVideoGrid.innerHTML = '';
-        if (snapshot.empty) {
-          noPublicVideos.classList.remove('hidden');
-        } else {
-          noPublicVideos.classList.add('hidden');
+        // Theme toggle
+        const themeIcon = document.querySelector('.theme-icon');
+        if (localStorage.getItem('theme') === 'light') {
+            document.body.classList.add('light-mode');
+            themeIcon.textContent = '☀';
         }
-        snapshot.forEach((docSnap) => {
-          publicVideoGrid.appendChild(createVideoCard(docSnap.data(), docSnap.id, false));
+        document.querySelector('.theme-toggle').addEventListener('click', () => {
+            document.body.classList.toggle('light-mode');
+            if (document.body.classList.contains('light-mode')) {
+                themeIcon.textContent = '☀'; localStorage.setItem('theme', 'light');
+            } else {
+                themeIcon.textContent = '🌙'; localStorage.setItem('theme', 'dark');
+            }
         });
-      });
-    }
 
-    // Real-time my videos (only for logged-in user)
-    function renderMyVideos() {
-      if (!currentUser) return;
-      const q = query(collection(db, 'videos'), where('userId', '==', currentUser.uid));
-      onSnapshot(q, (snapshot) => {
-        myVideoGrid.innerHTML = '';
-        if (snapshot.empty) {
-          noMyVideos.classList.remove('hidden');
-        } else {
-          noMyVideos.classList.add('hidden');
-        }
-        snapshot.forEach((docSnap) => {
-          myVideoGrid.appendChild(createVideoCard(docSnap.data(), docSnap.id, true));
+        // Request modal
+        document.getElementById('requestBtn').addEventListener('click', () => {
+            document.getElementById('requestModal').style.display = 'flex';
         });
-      });
-    }
 
-    // Upload video
-    uploadBtn.onclick = async () => {
-      const title = videoTitle.value.trim();
-      const file = videoFile.files[0];
-      const postNow = postToHomeCheckbox.checked;
-
-      if (!title || !file) {
-        alert('Please enter a title and select a video');
-        return;
-      }
-
-      uploadProgress.textContent = 'Starting upload...';
-      uploadBtn.disabled = true;
-
-      const storagePath = `videos/${currentUser.uid}/${Date.now()}_${file.name}`;
-      const storageRef = ref(storage, storagePath);
-
-      const uploadTask = uploadBytesResumable(storageRef, file);
-
-      uploadTask.on('state_changed',
-        (snapshot) => {
-          const progress = (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
-          uploadProgress.textContent = `Uploading: ${progress.toFixed(0)}%`;
-        },
-        (error) => {
-          alert('Upload error: ' + error.message);
-          uploadProgress.textContent = '';
-          uploadBtn.disabled = false;
-        },
-        async () => {
-          const url = await getDownloadURL(uploadTask.snapshot.ref);
-          await addDoc(collection(db, 'videos'), {
-            title,
-            url,
-            storagePath,
-            userId: currentUser.uid,
-            userEmail: currentUser.email,
-            posted: postNow,
-            createdAt: serverTimestamp()
-          });
-
-          videoTitle.value = '';
-          videoFile.value = '';
-          selectedFileDisplay.textContent = '';
-          uploadProgress.textContent = 'Upload complete! 🎉';
-          uploadBtn.disabled = false;
-          setTimeout(() => uploadProgress.textContent = '', 4000);
+        // Email function
+        function mail(service) {
+            const subject = encodeURIComponent(`Request: ${service}`);
+            const body = encodeURIComponent(`Hello Sam,\n\nI would like to inquire about: ${service}\n\nDetails:\n\nBest regards,`);
+            window.location.href = `mailto:urualabs@gmail.com?subject=${subject}&body=${body}`;
+            document.getElementById('requestModal').style.display = 'none';
         }
-      );
-    };
 
-    // Event Listeners
-    loginBtn.onclick = () => showAuth(false);
-    signupBtn.onclick = () => showAuth(true);
-    authToggle.onclick = (e) => {
-      e.preventDefault();
-      showAuth(authTitle.textContent === 'Login');
-    };
-    closeAuth.onclick = () => authForms.classList.add('hidden');
-    authForms.onclick = (e) => { if (e.target === authForms) authForms.classList.add('hidden'); };
-
-    // Initial load
-    showHome();
-  </script>
+        // Close modal when clicking outside
+        window.onclick = function(e) {
+            if (e.target === document.getElementById('requestModal')) {
+                document.getElementById('requestModal').style.display = 'none';
+            }
+        }
+    </script>
 </body>
 </html>
