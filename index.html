@@ -62,7 +62,7 @@
         section { padding: 80px 20px; max-width: 1200px; margin: 0 auto; }
         h2 { font-size: 2.5rem; margin-bottom: 30px; color: var(--accent-color); text-align: center; }
 
-        /* Request Section (replaces wallet) */
+        /* Request Section */
         .request-section {
             text-align: center;
             padding: 100px 20px;
@@ -107,11 +107,39 @@
         footer { background: var(--background-color); padding: 40px 20px; text-align: center; border-top: 1px solid var(--footer-border); }
         footer .social-links a { color: var(--accent-color); margin: 0 15px; text-decoration: none; font-size: 1.2rem; }
 
+        /* ChitChatter floating chat widget */
+        .chat-container {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            z-index: 9999;
+            width: 380px;
+            height: 520px;
+            border: 2px solid var(--accent-color);
+            border-radius: 16px;
+            overflow: hidden;
+            box-shadow: 0 8px 32px rgba(187, 51, 255, 0.4);
+            background: var(--background-color);
+            transition: all 0.3s ease;
+        }
+        .chat-container iframe {
+            width: 100%;
+            height: 100%;
+            border: none;
+        }
+
         @media (max-width: 768px) {
             .hero h1 { font-size: 2.5rem; }
             nav ul { display: none; flex-direction: column; position: absolute; top: 70px; left: 0; width: 100%; background: var(--dropdown-bg); padding: 20px; }
             nav ul.active { display: flex; }
             .menu-toggle { display: block; }
+            .chat-container {
+                width: 90%;
+                height: 70vh;
+                bottom: 10px;
+                right: 5%;
+                left: 5%;
+            }
         }
     </style>
 </head>
@@ -143,7 +171,6 @@
     <section class="about" id="about">
         <h2>About Sam Sage</h2>
         <p>Christian Fortuno, better known as Sam Sage, is a dynamic Singer-Songwriter and Producer from Puerto Rico...</p>
-        <!-- (rest of your about text unchanged) -->
         <p>Currently making waves on the Latin music scene in Austin (ATX), Sam Sage is the artist to watch as he continues to gain momentum. Check out his upcoming performance at <a href="https://schedule.sxsw.com/2025/artists/2205872" target="_blank">SXSW 2025</a>.</p>
     </section>
 
@@ -155,14 +182,12 @@
         </div>
     </section>
 
-    <!-- NEW REQUEST SECTION -->
     <section class="request-section" id="request">
         <h2>Need Something?</h2>
         <p style="color:var(--text-secondary); margin-bottom:40px;">Features, beats, website work, or crypto services — just ask.</p>
         <button id="requestBtn">REQUEST</button>
     </section>
 
-    <!-- Modal -->
     <div class="modal" id="requestModal">
         <div class="modal-content">
             <h3>What do you need?</h3>
@@ -183,6 +208,15 @@
             <a href="mailto:support@samsage.com">Contact Support</a>
         </div>
     </footer>
+
+    <!-- Floating anonymous ChitChatter group chat (bottom right) -->
+    <div class="chat-container">
+        <iframe 
+            src="https://chitchatter.im/public/93996e14-ff39-4022-9c5f-269260a9dc85?embed=1" 
+            allow="camera; microphone; display-capture; fullscreen" 
+            frameborder="0">
+        </iframe>
+    </div>
 
     <script>
         // Menu toggle
@@ -225,20 +259,6 @@
             }
         }
     </script>
-
-    <!--Start of Tawk.to Script - Anonymous Chat Widget (bottom right)-->
-    <script type="text/javascript">
-    var Tawk_API=Tawk_API||{}, Tawk_LoadStart=new Date();
-    (function(){
-    var s1=document.createElement("script"),s0=document.getElementsByTagName("script")[0];
-    s1.async=true;
-    s1.src='https://embed.tawk.to/69655740d9421519793ec7e2/1jeptplh0';
-    s1.charset='UTF-8';
-    s1.setAttribute('crossorigin','*');
-    s0.parentNode.insertBefore(s1,s0);
-    })();
-    </script>
-    <!--End of Tawk.to Script-->
 
 </body>
 </html>
