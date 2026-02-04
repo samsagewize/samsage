@@ -203,6 +203,7 @@
             <div class="logo"><a href="#home"><img src="IMG_1414.jpg" alt="Sam Sage Logo"></a></div>
             <ul>
                 <li><a href="#album">Album</a></li>
+                <li><a href="#templates">Pro Tools Template</a></li>
                 <li><a href="#music">Music</a></li>
                 <li><a href="https://kick.com/samsagewize" target="_blank">Kick</a></li>
                 <li><a href="https://uru.printify.me" target="_blank">Merch</a></li>
@@ -254,6 +255,28 @@
         </div>
     </section>
 
+    <section class="request-section" id="templates">
+        <h2>Pro Tools Recording Template</h2>
+        <p style="max-width: 760px; margin: 0 auto; color: var(--text-secondary);">
+            My personal Pro Tools recording template — organized, fast, and ready to track.
+            (Text-only release for now — no images.)
+        </p>
+
+        <div class="download-container">
+            <h3>Template Download</h3>
+            <p>
+                One-time purchase. After checkout, you’ll receive download instructions.
+            </p>
+            <div class="download-actions">
+                <a class="primary" href="#" id="stripeTemplateLink" target="_blank" rel="noopener">Buy Template</a>
+                <a href="mailto:support@samsage.com?subject=Pro%20Tools%20Template%20Questions" target="_blank" rel="noopener">Questions?</a>
+            </div>
+            <div class="download-note">
+                Coming soon: automated delivery after purchase (Dropbox).
+            </div>
+        </div>
+    </section>
+
     <section class="music" id="music">
         <h2>Music</h2>
         <p>Dive into the sound of Sam Sage on Spotify.</p>
@@ -290,6 +313,13 @@
         const stripeEl = document.getElementById('stripeDonateLink');
         if (stripeEl) {
             stripeEl.href = STRIPE_PAYMENT_LINK_URL || "mailto:support@samsage.com?subject=Stripe%20Link%20Missing";
+        }
+
+        // TODO: Pro Tools template Stripe link
+        const STRIPE_TEMPLATE_LINK_URL = "";
+        const stripeTemplateEl = document.getElementById('stripeTemplateLink');
+        if (stripeTemplateEl) {
+            stripeTemplateEl.href = STRIPE_TEMPLATE_LINK_URL || "mailto:support@samsage.com?subject=Pro%20Tools%20Template%20Purchase";
         }
 
         // Menu toggle
