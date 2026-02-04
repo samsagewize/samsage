@@ -237,11 +237,11 @@
         <div class="download-container" id="download">
             <h3>Next Project — Download</h3>
             <p>
-                My next project will be available for download with a donation of <b>$1 or more</b>.
+                My next project will be available for download for <b>$10</b>.
                 Secure checkout via Stripe.
             </p>
             <div class="download-actions">
-                <a class="primary" href="#" id="stripeDonateLink" target="_blank" rel="noopener">Donate $1+ to Download</a>
+                <a class="primary" href="#" id="stripeDonateLink" target="_blank" rel="noopener">Download for $10</a>
                 <a href="mailto:support@samsage.com?subject=Download%20Help" target="_blank" rel="noopener">Need help?</a>
             </div>
             <div class="download-note">
@@ -270,7 +270,7 @@
     <script>
         // TODO: Set your Stripe Payment Link URL here
         // Example: https://buy.stripe.com/xxxx
-        const STRIPE_PAYMENT_LINK_URL = "";
+        const STRIPE_PAYMENT_LINK_URL = "https://buy.stripe.com/test_14AdRa1px6u44dq5CIgMw02";
         const stripeEl = document.getElementById('stripeDonateLink');
         if (stripeEl) {
             stripeEl.href = STRIPE_PAYMENT_LINK_URL || "mailto:support@samsage.com?subject=Stripe%20Link%20Missing";
