@@ -6,7 +6,7 @@
       <stop offset="1" stop-color="#22d3ee"/>
     </linearGradient>
     <filter id="glow" x="-30%" y="-30%" width="160%" height="160%">
-      <feGaussianBlur stdDeviation="4" result="b"/>
+      <feGaussianBlur stdDeviation="2.2" result="b"/>
       <feMerge>
         <feMergeNode in="b"/>
         <feMergeNode in="SourceGraphic"/>
@@ -22,7 +22,7 @@
   -->
 
   <!-- Stroke layer for readability -->
-  <g fill="none" stroke="rgba(0,0,0,0.55)" stroke-width="10" style="paint-order: stroke;">
+  <g fill="none" stroke="rgba(0,0,0,0.45)" stroke-width="14" style="paint-order: stroke;">
     <text x="145" y="100" text-anchor="middle" dominant-baseline="middle"
           font-family="'Great Vibes', 'Pacifico', 'Brush Script MT', cursive"
           font-size="150">S</text>
@@ -33,7 +33,7 @@
   </g>
 
   <!-- Main gradient fill -->
-  <g fill="url(#g)" filter="url(#glow)">
+  <g fill="url(#g)">
     <text x="145" y="100" text-anchor="middle" dominant-baseline="middle"
           font-family="'Great Vibes', 'Pacifico', 'Brush Script MT', cursive"
           font-size="150">S</text>
