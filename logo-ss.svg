@@ -16,14 +16,30 @@
 
   <rect width="320" height="160" fill="transparent"/>
 
+  <!--
+    Two touching S's where the right S is mirrored (backwards).
+    We render 'S' twice: one normal, one mirrored around the center.
+  -->
+
   <!-- Stroke layer for readability -->
-  <text x="50%" y="62%" text-anchor="middle" dominant-baseline="middle"
-        font-family="'Great Vibes', 'Pacifico', 'Brush Script MT', cursive"
-        font-size="140" fill="none" stroke="rgba(0,0,0,0.55)" stroke-width="10"
-        style="paint-order: stroke;" >SS</text>
+  <g fill="none" stroke="rgba(0,0,0,0.55)" stroke-width="10" style="paint-order: stroke;">
+    <text x="145" y="100" text-anchor="middle" dominant-baseline="middle"
+          font-family="'Great Vibes', 'Pacifico', 'Brush Script MT', cursive"
+          font-size="150">S</text>
+    <text x="175" y="100" text-anchor="middle" dominant-baseline="middle"
+          font-family="'Great Vibes', 'Pacifico', 'Brush Script MT', cursive"
+          font-size="150"
+          transform="translate(320 0) scale(-1 1)">S</text>
+  </g>
 
   <!-- Main gradient fill -->
-  <text x="50%" y="62%" text-anchor="middle" dominant-baseline="middle"
-        font-family="'Great Vibes', 'Pacifico', 'Brush Script MT', cursive"
-        font-size="140" fill="url(#g)" filter="url(#glow)">SS</text>
+  <g fill="url(#g)" filter="url(#glow)">
+    <text x="145" y="100" text-anchor="middle" dominant-baseline="middle"
+          font-family="'Great Vibes', 'Pacifico', 'Brush Script MT', cursive"
+          font-size="150">S</text>
+    <text x="175" y="100" text-anchor="middle" dominant-baseline="middle"
+          font-family="'Great Vibes', 'Pacifico', 'Brush Script MT', cursive"
+          font-size="150"
+          transform="translate(320 0) scale(-1 1)">S</text>
+  </g>
 </svg>
