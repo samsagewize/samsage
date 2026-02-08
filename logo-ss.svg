@@ -23,23 +23,25 @@
 
   <!-- Stroke layer for readability -->
   <g fill="none" stroke="rgba(0,0,0,0.45)" stroke-width="14" style="paint-order: stroke;">
+    <!-- Left S is mirrored -->
     <text x="145" y="100" text-anchor="middle" dominant-baseline="middle"
-          font-family="'Great Vibes', 'Pacifico', 'Brush Script MT', cursive"
-          font-size="150">S</text>
-    <text x="175" y="100" text-anchor="middle" dominant-baseline="middle"
           font-family="'Great Vibes', 'Pacifico', 'Brush Script MT', cursive"
           font-size="150"
           transform="translate(320 0) scale(-1 1)">S</text>
+    <!-- Right S is normal -->
+    <text x="175" y="100" text-anchor="middle" dominant-baseline="middle"
+          font-family="'Great Vibes', 'Pacifico', 'Brush Script MT', cursive"
+          font-size="150">S</text>
   </g>
 
   <!-- Main gradient fill -->
   <g fill="url(#g)">
     <text x="145" y="100" text-anchor="middle" dominant-baseline="middle"
           font-family="'Great Vibes', 'Pacifico', 'Brush Script MT', cursive"
-          font-size="150">S</text>
-    <text x="175" y="100" text-anchor="middle" dominant-baseline="middle"
-          font-family="'Great Vibes', 'Pacifico', 'Brush Script MT', cursive"
           font-size="150"
           transform="translate(320 0) scale(-1 1)">S</text>
+    <text x="175" y="100" text-anchor="middle" dominant-baseline="middle"
+          font-family="'Great Vibes', 'Pacifico', 'Brush Script MT', cursive"
+          font-size="150">S</text>
   </g>
 </svg>
